@@ -1,3 +1,5 @@
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% OXFORD THESIS TEMPLATE
 
@@ -31,12 +33,45 @@
 
 
 
+%%%%%% Package imports
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{bbm}
+\usepackage{minted}
+\usepackage{authblk}
+\usepackage{setspace}
+\usepackage{lineno}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage[normalem]{ulem} % for \sout
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{rotating}
+\usepackage{breqn}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{adjustbox}
+\usepackage{geometry}
+\usepackage{caption}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 %%%%% SELECT YOUR DRAFT OPTIONS
 % Three options going on here; use in any combination.  But remember to turn the first two off before
 % generating a PDF to send to the printer!
 
 % This adds a "DRAFT" footer to every normal page.  (The first page of each chapter is not a "normal" page.)
-\fancyfoot[C]{\emph{DRAFT Printed on \today}}  
+
+% \fancyfoot[C]{\emph{DRAFT Printed on \today}}  
 
 % This highlights (in blue) corrections marked with (for words) \mccorrect{blah} or (for whole
 % paragraphs) \begin{mccorrection} . . . \end{mccorrection}.  This can be useful for sending a PDF of
@@ -73,9 +108,9 @@
 
 %%%%% THESIS / TITLE PAGE INFORMATION
 % Everybody needs to complete the following:
-\title{Suitably impressive thesis title}
-\author{Your Name}
-\college{Your College}
+\title{Powerful New Methods for Decomposing Genome-wide Ancestry and Performing Trait Association}
+\author{Hrushikesh Loya}
+\college{Balliol College}
 
 % Master's candidates who require the alternate title page (with candidate number and word count)
 % must also un-comment and complete the following three lines:
@@ -88,7 +123,7 @@
 % Your full degree name.  (But remember that DPhils aren't "in" anything.  They're just DPhils.)
 \degree{Doctor of Philosophy}
 % Term and year of submission, or date if your board requires (eg most masters)
-\degreedate{Michaelmas 2014}
+\degreedate{Michaelmas 2024}
 
 
 %%%%% YOUR OWN PERSONAL MACROS
@@ -202,7 +237,11 @@
 % Add or remove any chapters you'd like here, by file name (excluding '.tex'):
 \flushbottom
 \include{text/ch1-intro}
-\include{text/ch2-litreview}
+\include{text/ch2-gb-method}
+\include{text/ch3-gb-result}
+\include{text/ch4-qd-method}
+\include{text/ch5-qd-result}
+\include{text/ch6-conclusion}
 
 
 %% APPENDICES %% 
@@ -211,16 +250,12 @@
 \startappendices
 % Add or remove any appendices you'd like here:
 \include{text/appendix-1}
+\include{text/appendix-2}
 
 
 %%%%% REFERENCES
 
 % JEM: Quote for the top of references (just like a chapter quote if you're using them).  Comment to skip.
-\begin{savequote}[8cm]
-The first kind of intellectual and artistic personality belongs to the hedgehogs, the second to the foxes \dots
-  \qauthor{--- Sir Isaiah Berlin \cite{berlin_hedgehog_2013}}
-\end{savequote}
-
 \setlength{\baselineskip}{0pt} % JEM: Single-space References
 
 {\renewcommand*\MakeUppercase[1]{#1}%
