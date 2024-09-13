@@ -38,7 +38,7 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage[ruled,vlined]{algorithm2e}
+% \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{bbm}
@@ -62,9 +62,12 @@
 \usepackage{adjustbox}
 \usepackage{geometry}
 \usepackage{caption}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
 
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
+
 %%%%% SELECT YOUR DRAFT OPTIONS
 % Three options going on here; use in any combination.  But remember to turn the first two off before
 % generating a PDF to send to the printer!
@@ -220,8 +223,8 @@
 % \mtcaddchapter is needed when adding a non-chapter (but chapter-like) entity to avoid confusing minitoc
 
 % Uncomment to generate a list of tables:
-%\listoftables
-%	\mtcaddchapter
+\listoftables
+	\mtcaddchapter
 
 %%%%% LIST OF ABBREVIATIONS
 % This example includes a list of abbreviations.  Look at text/abbreviations.tex to see how that file is

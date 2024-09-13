@@ -36,7 +36,7 @@ We downloaded normalized protein expression values from the UK Biobank RAP (fiel
 %
 For GWAS, we considered up to $49{,}441$ European participants (based on self-reported field $21000$).
 %
-We ran Quickdraws with covariates including the top $20$ principal components \cite{bycroft2018uk}, age, sex, age$^2$, age$*$sex, age$^2*$sex, smoking status, collection site, batch, and time difference between blood sampling and protein measurement.
+We ran Quickdraws with covariates including the top $20$ principal components \cite{bycroft2018uk}, $age$, $sex$, $age^2$, $age*sex$, $age^2*sex$, smoking status, collection site, batch, and time difference between blood sampling and protein measurement.
 %
 We also ran Regenie on $250$ randomly sampled plasma proteins, focusing on a subset of $N=43{,}293$ individuals overlapping the British ancestry subgroup described in \cite{bycroft2018uk}.
 %
@@ -191,7 +191,7 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/sim_calibration/bt_fpr_common.pdf}
-    \caption{\textbf{Summary of calibration in simulations for binary traits and common variants (MAF $\geq 1\%$): }
+    \caption{\textbf{Summary of calibration in simulations for binary traits and common variants (MAF $\geq 1\%$).}
     %
     False positive rate (FPR) at a significance threshold of $\alpha \in \{0.05, 0.0005\}$, calculated as the number of variants on even chromosomes with p-value lower than $\alpha$.
     %
@@ -205,7 +205,7 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/sim_calibration/bt_fpr_rare.pdf}
-    \caption{\textbf{Summary of calibration in simulations for binary traits and rare variants (MAF $< 1\%$): }
+    \caption{\textbf{Summary of calibration in simulations for binary traits and rare variants (MAF $< 1\%$).}
     %
     False positive rate (FPR) at a significance threshold of $\alpha \in \{0.05, 0.0005\}$, calculated as the number of variants on even chromosomes with p-value lower than $\alpha$.
     %
@@ -219,8 +219,9 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
 %
 Finally, we verified the calibration of false positive rates in various other simulated conditions, including stronger population structure with up to $30\%$ non-European ancestry (see Figure \ref{fig:sim_calib_pop}), varying levels of relatedness (see Figure \ref{fig:sim_calib_rel}), and genetic architectures involving diverse causal effect size distributions (see Figure \ref{fig:sim_calib_mog}).
 %
-We also evaluated false positive rates in simulations involving all white British individuals from the UK Biobank (N $\approx 405k$), varying levels of polygenicity in quantitative traits ($1\%$ to $10\%$), and varying levels of prevalence ($0.3$ to $0.001$) in binary traits, finding Quickdraws to yield controlled false positive rates across varying significance thresholds (see Figure \ref{fig:sim_400k} and Table \ref{tab:fpr_simulations}).
+We also evaluated false positive rates in simulations involving all white British individuals (N $\approx 405k$) and all self-identified European individuals from the UK Biobank (N $\approx 460k$), varying levels of polygenicity in quantitative traits ($1\%$ to $10\%$), and varying levels of prevalence ($0.3$ to $0.001$) in binary traits. We found Quickdraws to yield controlled false positive rates across varying significance thresholds, while fastGWA, Regenie, and BOLT-LMM-Inf led to significant inflation in some cases (see figures \ref{fig:sim_400k}, \ref{fig:sim_460k} and tables \ref{tab:fpr_simulations}, \ref{tab:fgwa_fpr_sims}).
 %
+This is likely the result of residual population stratification, which is not fully corrected using principal components in these simulated scenarios and, if present, may cause subtle inflation in real-data analyses \cite{haworth2019apparent,sohail2019polygenic,berg2019reduced}.
 
 \begingroup
 \renewcommand{\arraystretch}{1.2} % Locally increases the row spacing just for this table
@@ -228,8 +229,7 @@ We also evaluated false positive rates in simulations involving all white Britis
 \begin{table}[h!]
 \centering
 \caption{
-\textbf{
-Summary of calibration in simulations involving $N=405$k white British individuals.} We report the false positive rate (FPR) at a significance threshold of $\alpha \in \{0.05, 0.0005\}$, calculated as the fraction of variants on even chromosomes with p-value lower than $\alpha$.
+\textbf{Summary of calibration in simulations involving (a) $N=405$k white British individuals and (b) $N=460$k European individuals \cite{bycroft2018uk}.} We report the false positive rate (FPR) at a significance threshold of $\alpha \in \{0.05, 0.0005\}$, calculated as the fraction of variants on even chromosomes with p-value lower than $\alpha$.
 %
 We varied the polygenicity from $1\%$ to $10\%$ in quantitative traits.
 %
@@ -237,6 +237,8 @@ For binary traits, we changed the prevalence from $0.3$ to $0.001$, fixing the p
 %
 Mean FPR refers to the mean across $50$ independent simulated traits, SE refers to standard errors, and p-values are computed for the significance of a deviation from the FPR threshold.
 }
+\begin{subtable}[h]{\textwidth}
+            \centering
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
@@ -259,6 +261,38 @@ Mean FPR refers to the mean across $50$ independent simulated traits, SE refers 
                                      &                        & 0.001 & 0.00042 & 0.00001 & $5.28 \times 10^{-13}$ \\ \hline
 \end{tabular}
 }
+\caption{$N=405$k white British individuals.}
+\end{subtable}
+
+\vspace{7mm}
+
+\begin{subtable}[h]{\textwidth}
+            \centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Simulation Type} & \textbf{FPR Threshold} & \textbf{Polygenicity (QT) / } & \textbf{Mean} & \textbf{SE} & \textbf{T-test} \\ 
+ &  & \textbf{Prevalence (BT)} & \textbf{FPR} & \textbf{FPR}  & \textbf{P} \\ 
+\hline
+\multirow{6}{*}{Quantitative Traits} & \multirow{3}{*}{0.05}  & 1\%   & 0.05061 & 0.000231 & 0.0098 \\ \cline{3-6}
+                                     &                        & 2\%   &0.05019 & 0.00025 & 0.4444 \\ \cline{3-6}
+                                     &                        & 10\%  &  0.05037 & 0.00026 & 0.1709 \\ \cline{2-6}
+                                     & \multirow{3}{*}{0.0005}& 1\%   & 0.00053 & 0.00001 &  0.0075 \\ \cline{3-6}
+                                     &                        & 2\%   & 0.00053 & 0.00001 & 0.01728 \\ \cline{3-6}
+                                     &                        & 10\%  &  0.00053 & 0.00001 &  0.0429 \\ \hline
+\multirow{8}{*}{Binary Traits}       & \multirow{4}{*}{0.05}  & 0.3   & 0.04983 & 0.00015 & 0.3108 \\ \cline{3-6}
+                                     &                        & 0.1   & 0.04997 & 0.00017 & 0.9015 \\ \cline{3-6}
+                                     &                        & 0.01  & 0.0437 & 0.00058 & $5.19 \times 10^{-18}$ \\ \cline{3-6}
+                                     &                        & 0.001 & 0.03121 & 0.0022 & $3.72 \times 10^{-13} $ \\ \cline{2-6}
+                                     & \multirow{4}{*}{0.0005}& 0.3   & 0.00051 & 0.00001 & 0.1391 \\ \cline{3-6}
+                                     &                        & 0.1   & 0.00053 & 0.00002 & 0.0436 \\ \cline{3-6}
+                                     &                        & 0.01  & 0.00033 & 0.00003 & $4.93 \times 10^{-7}$ \\ \cline{3-6}
+                                     &                        & 0.001 & 0.00022 & 0.00003 & $2.47 \times 10^{-15}$ \\ \hline
+\end{tabular}
+}
+\caption{$N=460$k European individuals.}
+\end{subtable}
+
 \label{tab:fpr_simulations}
 \end{table}
 
@@ -311,7 +345,7 @@ For instance, Quickdraws obtained $11.5\%$ and $12.04\%$ higher average $\chi^2$
     \label{fig:sim2_2}
     \end{subfigure}
     % \includegraphics[width=\textwidth]{figures/loya_qd_fig1.pdf}
-    \caption{\textbf{Statistical power in simulated quantitative and binary traits for unrelated British samples: }
+    \caption{\textbf{Statistical power in simulated quantitative and binary traits for unrelated British samples.}
     %
     (a) \% increase in average $\chi^2$ test statistics at causal variants w.r.t.\ linear regression (Lin. Reg.) for quantitative traits, varying the number of simulated causal variants from $5{,}000$ to $50{,}000$ variants.
     %
@@ -334,9 +368,9 @@ In the mixture of Gaussians setting, we again observed that Quickdraws and BOLT-
 %
 In simulations involving fully infinitesimal traits with Laplace and Gaussian effects, Quickdraws and BOLT-LMM produced results similar to other approaches that assume a fully infinitesimal trait architecture (see Figure \ref{fig:sim_power_mog}).
 %
-We also evaluated power in simulations involving all white British individuals from the UK Biobank ($N \approx 405$k).
+We also evaluated power in simulations involving all white British individuals from the UK Biobank ($N \approx 405$k) and all self-identified European individuals from the UK Biobank ($N \approx 460$k).
 %
-In this setting, we found Quickdraws to provide the highest association power, with higher power than BOLT-LMM when the polygenicity of the trait was low (see Figure \ref{fig:sim_400k}).
+In these settings, we found Quickdraws to provide the highest association power, with higher power than BOLT-LMM when the polygenicity of the trait was low (see figures \ref{fig:sim_400k} and \ref{fig:sim_460k}).
 %
 %
 
@@ -353,13 +387,27 @@ Quickdraws also yielded controlled FPR in all simulation settings we considered,
     \includegraphics[width=\textwidth]{figures/qd_panel_sim.pdf}
     \caption{\textbf{Power and FPR in N$=405$k simulation.}
     %
-    (a) The mean $\chi^2$ at causal variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits. 
+    (a) The mean $\chi^2$ at causal variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits. The $\chi^2$ at causal variants is not normalized by the $\chi^2$ at null variants in this plot.
     %
     (b) The mean false positive rates (FPR) at 0.005 calculated at null variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits.
     %
-    The simulation was performed using the N$=405$k set of white British individuals (See Methods for more details on simulations). The error bars represent 95\% confidence intervals.
+    The simulation was performed using the N$=405$k set of white British individuals. The error bars represent 95\% confidence intervals.
     }
     \label{fig:sim_400k}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{figures/qd_panel_sim2.pdf}
+    \caption{\textbf{Power and FPR in N$=460$k simulation.}
+    %
+    (a) The mean $\chi^2$ at causal variants across different methods and polygenicities for quantitative traits, and prevalence for binary traits. The $\chi^2$ at causal variants is not normalized by the $\chi^2$ at null variants in this plot.
+    %
+    (b) The mean false positive rates (FPR) at 0.005 calculated at null variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits.
+    %
+    The simulation was performed using the N$=460$k set of UK Biobank self-identified Europeans \cite{bycroft2018uk}. The error bars represent 95\% confidence intervals.
+    }
+    \label{fig:sim_460k}
 \end{figure}
 
 \clearpage
@@ -374,7 +422,7 @@ We applied standard quality-control filtering steps, retaining $458{,}420$ genot
 We compared the test statistics we obtained using Quickdraws to those obtained by other association methods, including SAIGE, FastGWA, Regenie, and BOLT-LMM.
 %
 
-\subsection{Controlled false positive rates}
+\subsection{Analysis of false positive rates}
 %
 We assessed the calibration of the test-statistics in real data by comparing the LD-score regression attenuation ratio estimates \cite{loh2018mixed} obtained using Quickdraws to those obtained using linear regression while restricting to the set of unrelated individuals with homogeneous British ancestry \cite{bycroft2018uk}.
 %
@@ -390,7 +438,7 @@ Quickdraws also remained calibrated in the analysis of low-prevalence binary tra
 \begin{figure}
     \centering
     \includegraphics[width=0.65\linewidth]{figures/qd_ukb/attnratio_plot.pdf}
-    \caption{\textbf{calibration in real data analysis.} Attenuation ratio of Quickdraws vs. linear regression in unrelated samples; vertical and horizontal lines represent standard error in the attenuation ratio estimate for each method. }
+    \caption{\textbf{Calibration in real data analysis.} Attenuation ratio of Quickdraws vs. linear regression in unrelated samples; vertical and horizontal lines represent standard error in the attenuation ratio estimate for each method. }
     \label{fig:real1c}
 \end{figure}
 
@@ -418,12 +466,12 @@ We found similar enrichments compared to variants found using both Regenie and Q
     \centering
     \begin{subfigure}{0.5\textwidth}
     \captionsetup{justification=raggedright,singlelinecheck=false}
-    \caption*{\large{(a)}}
+    \caption*{\textbf{(a)}}
     \includegraphics[width=\textwidth]{figures/functional/annotation_both_quant.pdf}
     \end{subfigure}%
     \begin{subfigure}{0.5\textwidth}
     \captionsetup{justification=raggedright,singlelinecheck=false}
-    \caption*{\large{(b)}}
+    \caption*{\textbf{(b)}}
     \includegraphics[width=\textwidth]{figures/functional/annotation_onlyqd_quant.pdf}
     \end{subfigure}
     \caption{\textbf{Functional enrichment at associated variants for quantitative traits.}
@@ -441,12 +489,12 @@ We found similar enrichments compared to variants found using both Regenie and Q
     \centering
     \begin{subfigure}{0.5\textwidth}
     \captionsetup{justification=raggedright,singlelinecheck=false}
-    \caption*{\large{(a)}}
+    \caption*{\textbf{(a)}}
     \includegraphics[width=\textwidth]{figures/functional/annotation_both_binary.pdf}
     \end{subfigure}%
     \begin{subfigure}{0.5\textwidth}
     \captionsetup{justification=raggedright,singlelinecheck=false}
-    \caption*{\large{(b)}}
+    \caption*{\textbf{(b)}}
     \includegraphics[width=\textwidth]{figures/functional/annotation_onlyqd_binary.pdf}
     \end{subfigure}
     \caption{\textbf{Functional enrichment at associated variants for binary traits.}
@@ -462,7 +510,7 @@ We found similar enrichments compared to variants found using both Regenie and Q
 
 \clearpage
 
-\subsection{Increased number of associations across traits}
+\subsection{Number of associations}
 We assessed the number of approximately independent associations detected using each method, performing variant clumping with strict filtering criteria (p-value threshold = $5 \times 10^{-9}$, $R^2$ threshold = $0.01$).
 %
 A summary of these results for Quickdraws, Regenie, and FastGWA, the most scalable methods we tested, is shown in Figure \ref{fig:ukb_indep}a; additional data is reported in tables \ref{tab:loci_qt} and \ref{tab:loci_bt}. 
@@ -711,7 +759,6 @@ For the analysis in table \ref{tab:speed}, we report the minimal cost across the
     \end{tabular}
     }
     \caption{Quantitative traits}
-    \label{tab:speed_quant}
     \end{subtable}
      
      \vspace{5mm}
@@ -740,7 +787,6 @@ For the analysis in table \ref{tab:speed}, we report the minimal cost across the
     \end{tabular}
     }
     \caption{Binary traits}
-    \label{tab:speed_bin}
     \end{subtable}
     
     \caption{\textbf{Computational efficiency of Quickdraws for (a) quantitative and (b) binary trait association.} We compare the computational requirements for recent GWAS algorithms with Quickdraws to generate summary statistics for 13.3 million variants and 50 phenotypes with either $N = 50,000$ or $N = 405,088$ and $458,464$ genotyped markers for model fitting ($89,177$ genotyped markers for SAIGE, see Methods); *Total memory includes CPU RAM memory and GPU memory, only Quickdraws requires GPU memory which is reported separately in brackets; **A more detailed cost analysis can be found in table \ref{tab:speed_quant} and \ref{tab:speed_bin} Running times are computed using the same hardware for all methods (mem2\_ssd1\_v2\_x8, with $32$ GB of RAM, $8$-core processor for $N=50k$ and mem1\_ssd1\_v2\_x36, $72$ GB of RAM, $36$-core processor for $N=405k$ datasets).
@@ -785,11 +831,13 @@ However, compared to the use of summary association statistics, one disadvantage
 Developing strategies that allow to meta-analyze these effects across cohorts could open new avenues for the development of federated association and polygenic prediction strategies that preserve high statistical power without the need for sharing individual-level data.
 %
 
+% mention federated learning angle, cite two bonnie berger papers 
+
 \subsection{Limitations and future work}
 
 We highlight several current limitations and areas of future work to improve the Quickdraws algorithm.
 %
-First, Quickdraws leverages modern GPU hardware to speed up the Bayesian regression in the model fitting step and is therefore significantly slower when run on traditional CPU hardware.
+First, Quickdraws leverages modern GPU hardware to speed up the Bayesian regression in the model fitting step and is therefore slower when run on traditional CPU hardware (see Figure \ref{fig:step1_cpu_gpu} for a comparison).
 %
 GPUs may not be as easily accessible as CPUs, and have higher costs, as evidenced in Table \ref{tab:speed_quant} and \ref{tab:speed_bin}.
 %
@@ -797,7 +845,7 @@ Our analyses on the RAP cloud platform, however, demonstrates that the overall i
 %
 Furthermore, the extensive use of GPUs in machine learning applications is likely to continue to increase their availability, paving the way for additional GPU-based applications in human genetics.
 %
-Future work may allow developing a CPU-based implementation of Quickdraws.
+Future work may allow developing a faster CPU-based implementation of Quickdraws.
 %
 Second, although Quickdraws is well parallelized for the analysis of multiple traits, it currently does not capture the correlations that often exist across these traits.
 %
@@ -813,3 +861,11 @@ To mitigate these biases, we implemented the adjustment strategy proposed in \ci
 However, further work will be needed to incorporate this adjustment in step 1 of the algorithm.
 %
 Despite these current limitations and avenues for future development, we believe that Quickdraws will provide a useful tool for large-scale GWAS, demonstrating the promise of leveraging modern machine learning methodology to improve statistical power and efficiency in these analyses.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/step1_running_time_cost.pdf}
+    \caption{\textbf{Computational performance of Quickdraws on different computing architectures.} We assessed the running time and cost associated with Quickdraws' model fitting step (Step 1) across varying numbers of samples ($N$) and phenotypes ($P$). Performance was compared for three architectures: an Nvidia A10G GPU node on the UK Biobank Research Analysis Platform (RAP) (\texttt{mem2\_ssd2\_gpu1\_x8}), a 14-core MacBook Pro equipped with the Apple M3 chip, and an 8-core CPU node on the UK Biobank RAP (\texttt{mem2\_ssd1\_v2\_x8}). Running costs were calculated only for the GPU and CPU nodes on the RAP.}
+    \label{fig:cpu_vs_gpu_vs_mac}
+\label{fig:step1_cpu_gpu}
+\end{figure}

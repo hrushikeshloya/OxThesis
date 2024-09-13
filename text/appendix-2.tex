@@ -1,4 +1,4 @@
-\chapter{\label{app:1-KL_divergence}Additional figures and tables}
+\chapter{\label{app:2}Additional figures and tables}
 
 \minitoc
 
@@ -8,7 +8,7 @@
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/gb_merge_sanity_check.png}
-    \caption{\textbf{Comparison of Allele Frequencies between HGDP+1000GP and Ancient Samples.} We analyze biallelic SNPs on chromosome 20 within the masked regions. The comparison includes union (``all sites'') and intersection (``overlapping sites'') of SNPs in the two datasets seperately.}
+    \caption{\textbf{Comparison of allele frequencies between HGDP+1000GP and ancient samples.} We analyze biallelic SNPs on chromosome 20 within the masked regions. The comparison includes union (``all sites'') and intersection (``overlapping sites'') of SNPs in the two datasets seperately.}
     \label{fig:gb-sanity-check}
 \end{figure}
 
@@ -49,7 +49,7 @@
     \centering
     \includegraphics[width=\textwidth]{figures/sim_calibration/mog_fpr.pdf}
     \caption{
-    \textbf{Summary of calibration in simulations with varying causal effect distributions: }
+    \textbf{Summary of calibration in simulations with varying causal effect distributions.}
     %
     The first two rows correspond to causal effects simulated from a mixture of two Gaussian. 
     %
@@ -84,9 +84,7 @@
     \centering
     \includegraphics[width=\textwidth]{figures/sim_power/bt_power.pdf}
     
-    \caption{\textbf{
-    %
-    Summary of statistical power in simulations for binary traits.}
+    \caption{\textbf{Summary of statistical power in simulations for binary traits.}
     %
     We measure the normalized causal $\chi^2$ at top $1{,}000$ and top $10{,}000$ causal variants.
     %
@@ -103,9 +101,7 @@
     \centering
     \includegraphics[width=\textwidth]{figures/sim_power/mog_power.pdf}
     \caption{
-    \textbf{
-    %
-    Summary of statistical power in simulations with varying causal effect distributions.}
+    \textbf{Summary of statistical power in simulations with varying causal effect distributions.}
     %
     The first two rows correspond to causal effects simulated from a mixture of two Gaussian. 
     %
@@ -276,7 +272,7 @@
 \label{sec:additional_tables}
 
 \begin{longtable}{|l|c|c|c|}
-\caption{\textbf{Coverage Data Across Different Regions}} \\
+\caption{\textbf{Ancient samples built in the genealogy.} Ancient sample IDs, sampling age (in years), country of origin and genomic coverage} \\
 \hline
 \textbf{ID} & \textbf{Date} & \textbf{Country} & \textbf{Coverage} \\
 \hline
@@ -351,6 +347,26 @@ atp002 & 4,746 & Spain & 11.3
 \label{tab:gb_ancient_samples}
 \end{longtable}
 
+\begin{table}[h!]
+\centering
+\caption{\textbf{False positive rates (FPR) for FastGWA in quantitative trait simulations with up to 460,000 self-identified Europeans.} The table presents the FPR for FastGWA under various sample sizes, controlling for residual population stratification by adjusting the number of included principal components (PCs) or by omitting them entirely. The polygenicity of the simulated trait is fixed at 1\%. S.E. refers to the standard error, and * indicates a Bonferroni-significant t-test p-value. The significance threshold for the FPR was set at 0.005. Each simulation condition varied one of the following baseline parameters: sample size (N = 460k), ancestry differences explaining 5\% of phenotypic variance, and the use of 10 PCs to correct for stratification.}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Condition} & \textbf{Mean FPR} & \textbf{S.E. FPR} & \textbf{t-test p-value} \\ \hline
+\textbf{Varying sample sizes} & & & \\ 
+N = 50k & 0.00503 & 2.99 x 10$^{-5}$ & 0.23 \\ 
+N = 100k & 0.00514 & 4.35 x 10$^{-5}$ & 0.0009 \\ 
+N = 460k & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ \hline
+\textbf{Varying pop. stratification} & & & \\
+5\% & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ 
+0\% & 0.00509 & 2.94 x 10$^{-5}$ & 0.0019 \\ \hline
+\textbf{Varying \#PCs} & & & \\ 
+3 PCs & 0.01424 & 3.23 x 10$^{-4}$ & 2 x 10$^{-48}$ * \\ 
+10 PCs & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ 
+20 PCs & 0.00531 & 3.61 x 10$^{-5}$ & 1.8 x 10$^{-13}$ * \\ \hline
+\end{tabular}
+\label{tab:fgwa_fpr_sims}
+\end{table}
 
 \begin{longtable}{|c|c|c|c|}
 \caption{\textbf{Quantitative traits analyzed.} Quantitative traits analyzed, including RHE-MC $h^2$ estimates and sample sizes (N).} \label{tab:ukb_qt_traits} \\
@@ -911,9 +927,7 @@ Duration of walks & 0 & 0 \\
     %
     We compare the computational requirements of several GWAS algorithms and Quickdraws across $3$ to $4$ RAP cloud instances for ${\sim}13.3$ million tested variants and $50$ phenotypes with either $N = 50{,}000$ or $N = 405{,}088$ samples and $458{,}464$ genotyped markers for model fitting.
     %
-    * The step 1 for Quickdraws is run using \texttt{mem3\_ssd1\_gpu\_x8}; ** extrapolated value; ``-'' indicates that BOLT-LMM was not run in this setting.
-    %
-    Refer to section \ref{sec:ukb_rap} for more details.}
+    * The step 1 for Quickdraws is run using \texttt{mem3\_ssd1\_gpu\_x8}; ** extrapolated value; ``-'' indicates that BOLT-LMM was not run in this setting.}
     \begin{subtable}[h]{\textwidth}
         \centering
         \resizebox{\textwidth}{!}{
@@ -973,9 +987,7 @@ Duration of walks & 0 & 0 \\
     %
     * The step 1 for Quickdraws is run using \texttt{mem3\_ssd1\_gpu\_x8}.
     %
-    All methods except FastGWA were run on $1$ million test variants and extrapolated.
-    %
-    Refer to section \ref{sec:ukb_rap} for more details.}
+    All methods except FastGWA were run on $1$ million test variants and extrapolated.}
     \begin{subtable}[h]{\textwidth}
         \centering
         \resizebox{\textwidth}{!}{

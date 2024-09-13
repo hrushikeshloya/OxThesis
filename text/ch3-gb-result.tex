@@ -35,7 +35,7 @@ The humid phase, often referred to as the ``Green Sahara'' period, could have ma
 
 One of the first work to identify potential Eurasian ancestry in sub-Saharan Africans was conducted by Pickrell et al. \cite{pickrell2012genetic, pickrell2014ancient}.
 %
-They used ALDER \cite{loh2013inferring}, a method to identify and date admixture signal through LD decay curves (as described in section \ref{sec:ch1-gb-survey}) and found evidence for west Eurasian ancestry in south and east African populations, but not in West or central Africans. 
+They used ALDER \cite{loh2013inferring}, a method to identify and date admixture signal through coancestry curves (as described in section \ref{sec:ch1-gb-survey}) and found evidence for west Eurasian ancestry in south and east African populations, but not in West or central Africans. 
 %
 They estimated the proportions of west Eurasian ancestry to be up to 14\% in south African populations and up to 50\% in east African populations. These admixture events were dated to approximately 900–$1{,}800$ years ago in south Africa and $2{,}700$–$3{,}300$ years ago in east Africa. 
 %
@@ -142,51 +142,67 @@ I5950 & Llorente et al. \cite{llorente2015ancient} & Mota cave, Ethiopia  & 11.2
     \label{fig:gb-afr-samples-map}
 \end{figure}
 
+To detect Eurasian ancestry in African samples, we combined the non-Finnish Europeans (NFE), East Asians (EAS), and South Asians (SAS) in the dataset and labeled them collectively as Eurasians. Each African population was then analyzed using all Eurasians and all African populations in the dataset as reference groups. To avoid potential confounding factors, we excluded recently admixed groups such as Middle Easterners and Americans from the reference panel. We focused on coalescence events occurring between 0 and 50,000 years ago, dividing this time span into 20 epochs on a log scale, ranging from 1,000 to 50,000 years. Coalescence events after 50,000 years were disregarded, as they are likely associated with older events before the Out of Africa migration. We conducted the analysis with $k=2$ components and fixed the coalescence rates for these components based on genome-wide coalescence rates for Eurasians and the specific African population being analyzed.
 
-%% better population labeling
-%% add SGDP ?
-%% add ancients? 
+We identified 1-8\% Eurasian ancestry across the modern African groups we analyzed, with the highest proportions found in the Bantu Kenyans from East Africa (xx\%) and the Mandenka from West Africa (yy\%). Among the ancient samples, we detected zz\% Eurasian ancestry in the 4,500-year-old Mota individual from Ethiopia and aa\% in the 7,900-year-old Shum Laka individual from Cameroon. In contrast, we observed little to no Eurasian ancestry in the 1,900-year-old Ballito Bay individual from South Africa, who is considered an ancestor of modern-day San individuals. These findings suggest that the back-to-Africa gene flow may have occurred earlier than previously hypothesized \cite{pickrell2012genetic,llorente2015ancient}, but may not have reached all south African population until recently. We replicated our findings using the simons genome diversity project (SGDP), which includes some African individuals from HGDP. We compared the local ancestry inferred using the SGDP reference panel with that from the HGDP+1000GP reference panel and found a high correlation in local ancestry estimates, with similar proportions of Eurasian ancestry in both datasets (see Figure aa). Additionally, we performed further analyses by adjusting the epoch boundaries and omitting the HMM, which resulted in highly correlated local ancestry and same conclusions  ($R^2 > zz$, see Figure zz). We plot the inferred Eurasian proportion for the modern and ancient samples in Figure zza and also visualize the clustering by plotting the principal components of the coalescence count matrix in Figure zzb. 
 
-
-% how did we run the method? 
-%% 1. Combined nfe, eas and sas group and called them Eurasians.
-%% 2. Epochs = 0 to 50,000 years (looking at more recent event)
-%% 3. Fixed the coalescene rates based on coalescene rates for Eurasian and African segments, varied the proportions and admixture time
-%% 4. Fit each African group seperately.
-
-% main result
-%% 1. We found 1-8\% Eurasian ancestry across the groups we analyzed
-%% 2. Highest in ..., lowest in ... 
-%% 3. Among ancient samples, Mota had .., whereas balito boy didn't have any. 
-%% 4. We replicated the finding in SGDP, and found the local ancestry inferred for the same samples to be highly correlated.
-%% 5. Ablations: hmm vs no hmm, changing epoch boundries
-%% 6. PCA visualization
 
 \subsection{Dating the admixture event}
-
 %% LD-decay curves
 %% Showing it was continous migration? plot the coal. time vs. segment length
 
+We estimate the date of admixture events using coancestry curves derived from the local ancestry inferred by GhostBuster. Each African population's admixture date is estimated separately to account for population-specific variations. More detailed information on coancestry curves and their implementation can be found in Section \ref{sec:ch2-gb-coancestry}. Our analysis reveals that the timing of admixture events varies among African populations, ranging from approximately 5,000 years ago in the San to around 15,000 years ago in the Mbuti and Biaka populations. This time-range is consistent with results showing this signal in ancient African samples upto 7900 years ago. Moreover, using the radio-carbon sampling times of the ancient individuals, the admixture dates for ancient individuals also span from $xx$ to $yy$ years before present (see Figure zz).
+
+We observe a strong negative correlation between the proportion of Eurasian ancestry and the estimated admixture date (see Figure zz), with the San population being the only outlier. Despite having the most recent admixture date, the San still exhibit a relatively low proportion of Eurasian ancestry. This pattern could likely be explained by the continuous diffusion of Eurasian ancestry from North to South Africa. As the Eurasian genetic influence moved southward, it may have been diluted by local African populations, resulting in lower proportions of Eurasian ancestry and younger admixture dates in populations further south.
+
+%% mention about coal. time vs segment length ?
+
 \subsection{Eurasian ancestry explains the Neanderthal ancestry in Africa}
 
-% cite: The Neanderthal ancestry in modern Africans can be explained by back migration from an ancestral European- like source into Africa (72), a scenario which is supported by other studies that found Neanderthal ancestry proportions to correlate with Eurasian ancestry proportions (21,32,73,74). (Hollfelder et al. 2021)
+It has been previously demonstrated that modern Africans possess small amounts of Neanderthal ancestry in their genomes, most likely due to a back-migration event from Europe \cite{chen2020identifying, bergstrom2020insights, wang2013apparent, hollfelder2017northeast}. To further explore this, we utilized GhostBuster to identify Neanderthal ancestry in African individuals by analyzing genealogies jointly inferred with modern African samples and ancient samples, including three Neanderthal samples (from Altai, Chagyrskaya and Vindija caves). Our analysis focused on coalescence events occurring between 50,000 and 1 million years ago, dividing this period into 20 epochs on a logarithmic scale. We fixed the cluster coalescence rates to that for Neanderthals and the target African population to focus on getting the Neanderthal ancestry in the sample. We performed the EM algorithm to infer the proportions, admixture times and the local ancestry of the sample. This approach provides a better way to inferring Neanderthal local ancestry in Africans, as it avoids relying on un-admixed reference samples or identity-by-descent (IBD) segments with Neanderthals, which may be biased due to human-to-Neanderthal admixture \cite{chen2020identifying}.
 
-%% Corr. in proportion
-%% Enrichment in local ancestry
+We find that the African samples exhibit approximately zz\% to yy\% Neanderthal ancestry, with a strong correlation between the genome-wide Neanderthal proportion and the Eurasian ancestry proportion inferred using GhostBuster ($R^2 = 0.51$, see Figure zz). The slope of the linear fit is $1.1$\%, with an intercept not significantly different from zero, suggesting that Neanderthal ancestry in these populations is closely tied to the presence of Eurasian ancestry. It also implies that the source Eurasian ancestry that contributed to back-migration event has around $1.1$\% Neanderthal ancestry. Furthermore, at the local ancestry level, we observed a $12 \times$ enrichment of Neanderthal ancestry within Eurasian segments compared to non-Eurasian segments. This significant enrichment reinforces the hypothesis that a back-migration event from Eurasia introduced the small amounts of Neanderthal ancestry in modern African samples. 
 
 \subsection{Mutational profiles validate Eurasian segments in Africa}
 
-%% TCC-TTC
-%% weak-strong
+There is evidence that human mutation rates have evolved over short time scales and independently across different populations \cite{harris2015evidence, harris2017rapid}. One notable example is the TCC to TTC mutation, which has been shown to be up to twice as likely to occur in Europeans compared to East Asians or Africans. 
+
+We explore this further in the context of the back-migration event. For a given trimer, we define the normalized mutation rate per individual as the number of trimer mutations in the derived state relative to the total number of derived state mutations, considering all 96 possible trimers. We time-stratify the mutation rates into 20 epochs by accounting for allele age. For each individual in the population, we sum the numerator and denominator separately, yielding normalized mutation rates for each population. To facilitate meaningful comparisons, we further normalize these rates relative to the normalized mutation rates in African populations. This measure, termed mutation rate enrichment effectively captures the enrichment of specific mutation types in a given population compared to their normalized mutation rates in Africans. We examine this enrichment across various continental populations, including Sardinians and Basques in Europe, Han and Japanese in East Asia, and Pathans and Balochis in South Asia. Notably, we analyze the enrichment for Eurasian and non-Eurasian segments in African samples separately. We perform a chromosome-wise block-jackknife to estimate the confidence interval around the mutation rate enrichment. 
+
+Examining the TCC to TTC mutation types, we observe significant enrichment not only in European and South Asian populations but also in the Eurasian segments within African individuals (see Figure xx). Previously, this enrichment was not detectable in Africans due to the small proportion of Eurasian segments in their genomes. However, by leveraging the local ancestry inferred using GhostBuster, we were able to isolate and identify this enrichment, providing independent validation of the back-migration event we identified. The enrichment is most pronounced in the last 20,000 years, aligning with the known evolutionary trajectory of TCC to TTC mutations, which saw a dramatic increase around 15,000 years ago and a subsequent decrease approximately 2,000 years ago \cite{harris2017rapid}. We conducted this analysis separately for each African population and consistently found significant enrichment in the Eurasian segments across all groups (see Figure xx). Populations with more recent admixture and higher proportions of Eurasian ancestry exhibited the greatest enrichment, likely due to the stronger TCC to TTC signal associated with more recent Eurasian gene flow. Further, when we stratified the Eurasian segments by length, we observed that longer segments exhibited a higher amplitude of enrichment (see Figure yy). This pattern may be attributed to either higher false positive rates in shorter segments or to ongoing Eurasian gene flow that exhibits varying TCC to TTC signal over time. Notably, San individuals, who have the most recent admixture dates, showed the highest enrichment for TCC to TTC mutations among African populations, with levels nearly matching those observed in European populations and even surpassing the enrichment seen in South Asian populations. This suggests that the timing and extent of Eurasian admixture significantly influence the presence of these mutations.
+
+In addition to examining the TCC to TTC mutations, we also investigated the enrichment of mutations related to strong-to-weak and weak-to-strong mutation types. It is well-known that gene conversion can favor GC base pairs over AT base pairs, a phenomenon known as GC-biased gene conversion \cite{duret2009biased}. Strong-to-weak mutations are defined as those where strong alleles (GC) are mutated to weak alleles (AT), while weak-to-strong mutations involve a change from AT to GC. The impact of GC-biased gene conversion is influenced by several factors, including population size. Larger population sizes typically result in stronger GC-biased gene conversion, whereas population bottlenecks can lead to a relaxation of this bias. For our analysis, we excluded CpG sites when defining strong or weak mutations (why?). This approach allows for a more accurate assessment of the mutation patterns influenced by GC-biased gene conversion across different populations. Similar to Eurasian population, the Eurasian segments in Africans were also enriched for strong to weak mutations (and depleted for weak to strong mutations) relative to Africans as a whole. Interestingly, the Eurasian segments in Africans exhibit an even higher amplitude of strong-to-weak mutations compared to those in Europeans and East Asians. This suggests that the Eurasian population that contributed ancestry to Africa may have experienced an even more severe bottleneck than the population that initially migrated out of Africa (see Figure aa). 
 
 \subsection{Identifying the source groups}
 
-%% Coal. rate with moderns
-%% Coal. rate with ancients
+Next we sought to identify the source population that may have contributed to this back-migration event. To achieve this, we calculated the coalescence rates of the Eurasian segments within African genomes against a range of modern and ancient samples built in the genealogies. Specifically, we utilized the HGDP+1000GP+ancients dataset as described in Section \ref{sec:ch2-gb-data}, focusing on coalescence rates in the recent past, spanning xx to yy years ago. Additionally, we decompose each African population separately as they might not share the same source population, helping us with a more nuanced understanding of the back-migration event.
+
+%% Para 1
+% We find Bedouin, Mozabite and Sardinians to be among the most quickly coalescing populations among the modern samples, whereas Farmers in ancient groups coalesced much faster with the Eurasian segments than other European ancients.
+% african ancestry in bedouin and sardinian handled?
+% Sardinians more in the past, bedouin more in the recent
+% how it aligns with ancients in north africa
+% within africa differences? 
+
+%% Para 2
+% Overlap of Eurasian ancestry across different African populations ? - Interesting (a greedy algorithm to explain the pattern)
+% relate to continous gene-flow model
+% calculate p(eur in west africa | eur in east africa) or p(eur in south africa | eur in east or west africa)
+
 
 \subsection{Signatures of positive selection} 
 
-%% Assuming a simple piecewise-constant model, we infer that the rate of TCC → TTC mutations increased dramatically  ∼ 15,000 years ago and decreased again  ∼ 2000 years ago. This time-range is consistent with results showing this signal in a pair of prehistoric European samples from 7000 and 8000 years ago, respectively (Mathieson and Reich, 2016). We hypothesize that this mutation pulse may have been caused by a mutator allele that drifted up in frequency starting 15,000 years ago, but that is now rare or absent from present day populations. (see: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5435464/)
+Finally, we investigate signatures of selection for specific ancestries following the admixture event by identifying regions with significantly elevated Eurasian ancestry. Due to the relatively small proportion of Eurasian ancestry in these populations, our power to detect regions with a deficit of Eurasian ancestry (Eurasian ancestry deserts) is limited. Therefore, we focus on regions where Eurasian ancestry is significantly enriched in African samples. n particular, we focus on the top 20 regions which exhibit the highest average Eurasian ancestry, with values exceeding 19\%, compared to the genome-wide average of just xx\%. These regions may highlight areas of positive selection where Eurasian alleles have been advantageous in the African populations, possibly relating to adaptive admixture.
+
+In order to perform the functional analysis for these 20 regions we looked at the frequency of Eurasian ancestry in each of the African populations, proximity to coding region, nearest gene, ..
+- We defined tag variants
+
+%% ancestry deserts or enrichments 
+%% not enough power to detect deserts 
+%% functional analysis - tag variant, nearest gene, freq. across african populations
+
+%% one specific location
+%% tag variant functional enrichment (closeness to xx) GWAS enrichment
 
 
 \section{Deep population structure in Africa}
@@ -240,4 +256,5 @@ Finally, Cousins et al. \cite{cousins2024structured} provide statistical evidenc
 
 \section{Discussion}
 \subsection{Limitations and future work}
-Low-coverage ancients - threading
+- Low coverage ancients and threading
+\subsection{Understanding admixtures in non human organisms}

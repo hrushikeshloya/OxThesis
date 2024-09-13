@@ -8,7 +8,7 @@ In this chapter, we introduce a novel method called Quickdraws, which we develop
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/thesis_qd_simplified_overview.pdf}
-    \caption{\textbf{A simplified overview of Quickdraws:} Quickdraws is a scalable mixed model designed for genome-wide association studies (GWAS). It enhances the power of association testing through a two-step process. First, it estimates the genomic prediction for a trait by excluding the testing chromosome, employing a leave-one-chromosome-out method. The prediction models sparsity of effects and is optimized using advanced variational inference techniques ensuring scalability for large sample sizes. Second, the model leverages this genomic prediction to improve the signal-to-noise ratio for finding association between a trait and a variant.}
+    \caption{\textbf{A simplified overview of Quickdraws.} Quickdraws is a scalable mixed model designed for genome-wide association studies (GWAS). It improves the power of association testing through a two-step process. First, it estimates the genomic prediction for a trait by excluding the testing chromosome, employing a leave-one-chromosome-out method. The prediction models sparsity of effects and is optimized using advanced variational inference techniques ensuring scalability for large sample sizes. Second, the model leverages this genomic prediction to improve the signal-to-noise ratio for finding association between a trait and a variant.}
     \label{fig:qd-simplified-overview}
 \end{figure}
 
@@ -17,7 +17,7 @@ In this chapter, we introduce a novel method called Quickdraws, which we develop
 \subsection{Bayesian inference}
 Bayesian inference is a popular statistical inference approach that takes into account prior beliefs about the model along with evidence obtained from the data.
 %
-We introduce some basic terminology related to Bayesian inference, which we utilize in the following chapters to describe our inference approach.
+We introduce some basic terminology related to Bayesian inference, which we utilize in the following sections to describe our inference approach.
 %
 We refer the reader to \cite{blei2017variational,bishop2006pattern} for a more in-depth review on Bayesian inference and variational Bayes approaches.
 %
@@ -29,13 +29,11 @@ We use the following notation and terminology:
     \item The \textbf{prior} distribution, $P(\theta)$, is the distribution of the parameters before any data is observed.
     \item The \textbf{data likelihood} or likelihood, $P(X \mid \theta)$, is the distribution of the data conditioned on model parameters.
     \item The \textbf{evidence} or marginal likelihood is the distribution of the observed data marginalized over parameters,
-    
     \begin{equation}
         P(X) = \int P(X \mid \theta) P(\theta) d \theta \nonumber.
     \end{equation} 
     
     \item The \textbf{posterior}, $P(\theta \mid X)$, is the distribution of the parameters after taking into account the observed data,
-    
     \begin{equation}
         P(\theta \mid X) = \frac{P(X \mid \theta) P(\theta)}{P(X)} = \frac{P(X \mid \theta) P(\theta)}{\int P(X \mid \theta) P(\theta) d \theta} \nonumber.
     \end{equation}
@@ -57,17 +55,12 @@ In variational inference, posterior inference is formulated as an optimization p
 As the exact posterior probability is often intractable, we assume an approximate posterior family that is easy to evaluate.
 %
 We then optimize the parameters of this posterior family so that the Kullback–Leibler (KL) divergence between the approximate and true posteriors is sufficiently small:
-%
-
 \begin{equation}
     KL\left(q_{\omega} (\theta) \| P(\theta \mid X) \right) = \int q_{\omega} (\theta) \log \left( \frac{q_{\omega} (\theta)}{P(\theta \mid X)} \right) d \theta \label{kl},
 \end{equation}
-
-%
 where $P(\theta \mid X)$ is the true posterior and $q_{\omega} (\theta)$ is the approximate posterior, parameterized by $\omega$ (also known as variational parameters).
 %
 Variational inference aims to minimize the KL divergence in Equation \ref{kl}, to obtain optimal variational parameters $\omega^{*}$: 
-
 \begin{equation}
     \omega^{*} = \underset{\omega}{\mathrm{argmin}}KL(q_{\omega}(\theta)||P(\theta|\textbf{X})).
     \label{opti}
@@ -87,7 +80,6 @@ We thus use the Bayes rule to simplify the above equation,
 &= \mathbb{E}[log(q_{\omega}(\theta))] -\mathbb{E}[log(P(\theta,\textbf{X})] + log(P(\textbf{X})) \nonumber \\
 & = KL(q_{\omega}(\theta)||P(\theta)) -  \mathbb{E}[log(P( \textbf{X}|\theta)] + log(P(\textbf{X})) \geq 0
 \end{align} 
-
 \begin{equation}
     \implies log(P(\textbf{X})) \geq \mathbb{E}[log(P( \textbf{X}|\theta)] - KL(q_{\omega}(\theta)||P(\theta)) \label{elbo_bound}.
 \end{equation}
@@ -98,8 +90,6 @@ In the above, the term on the left is the logarithm of the evidence, so the term
 Variational inference algorithms try to minimize the KL divergence between the true posterior and approximate posterior by maximizing the ELBO in Equation \ref{elbo_bound}.
 %
 The ELBO can also be seen as the difference between the expected log-likelihood of the data and the KL divergence between the approximate posterior and prior,
-%
-
 \begin{equation}
     \mathcal{L}_{VI}(\omega) = \mathbb{E}[log(P( \textbf{X}|\theta)] - KL(q_{\omega}(\theta)||P(\theta)).
 \end{equation}
@@ -108,7 +98,6 @@ The ELBO can also be seen as the difference between the expected log-likelihood 
 In the context of Bayesian regression, our sampling distribution is $P(y \mid X)$ instead of $P(X)$, where $y$ is the outcome variable and $X$ is the input variable.
 %
 In that case, the ELBO is written as
-
 \begin{equation}
     \mathcal{L}_{VI}(\omega) = \underbrace{\mathbb{E}[\log(P( \textbf{y}|\theta, \textbf{X}))]}_{\text{Expected LL}} - \underbrace{KL(q_{\omega}(\theta)||P(\theta))}_{\text{KL-divergence}}
     \label{elbo_blr}
@@ -125,7 +114,6 @@ This enables the use of coordinate-ascent variational inference algorithms and m
 
 %
 Using this approach, the model we adopt when estimating genetic effects in quantitative traits, i.e., a Bayesian linear regression with spike-and-slab prior and a fully-factorized spike-and-slab approximate posterior, takes the form
-
 \begin{align}
     &\text{\textbf{Likelihood:} } &P(y \mid X, \beta) \sim \mathcal{N}(\beta^T X, \sigma_e^2) \nonumber \\
     &\text{\textbf{Prior:} } &P(\beta) = \prod_j P(\beta_j), \hspace{1mm} P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0) \nonumber \\
@@ -145,7 +133,6 @@ Coordinate ascent variational inference (CAVI), introduced in \cite{bishop2006pa
 CAVI iteratively optimizes each factor in the mean-field posterior while fixing the other factors, thereby improving the ELBO in each iteration and finding a local optimum.
 %
 CAVI updates each factor in the approximate posterior as follows:
-
 \begin{equation}
     \log q(\beta^{*}{_j}) = E_{\beta_{(-j)}} [\log(P(y, \beta))] + C \label{cavi}
 \end{equation}
@@ -158,8 +145,9 @@ It can be shown that the above updates increase the ELBO each iteration (see \ci
 We next derive the CAVI update equations for the Bayesian linear regression model described in Equation \ref{spike-and-slab-model}.
 %
 
+\newpage
+
 %
-\vspace{3mm}
 \noindent \textbf{Derivation of CAVI updates for spike-and-slab Bayesian linear regression:}
 
 \begin{align}
@@ -176,7 +164,6 @@ We will also remove terms which do not depend on $\beta_j$ and absorb them in th
 
 %
 We start by simplifying the equation by substituting the normal log-likelihood and spike-and-slab prior,
-
 \begin{equation}
     \log q(\beta^{*}{_j}) = \sum_{n=1}^N E_{\beta_{(-j)}} \Big(- \frac{(y_n - \beta^T x_n)^2}{2 \sigma_e^2}  - log(\sigma_{e}) \Big)+ E_{\beta_{(-j)}}  \log P(\beta_j) + C.
 \end{equation}
@@ -186,7 +173,7 @@ Because the spike-and-slab distribution can be seen as mixture of non-overlappin
 %
 The natural parameters for the spike-and-slab distribution $(1-p_0) \mathcal{N}(\mu, \sigma^2) + p_0 \delta(0)$ are $-\frac{1}{2\sigma^2}$, $\frac{\mu}{\sigma^2}$, and $\log p_0 - \log (1-p_0) + \frac{\mu^2}{2\sigma^2} + \frac{1}{2}\log \sigma^2$, with corresponding sufficient statistics $\mathbb{I}\left\{\beta_j \ne 0\right\} \beta_j^2$, $\mathbb{I}\left\{\beta_j \ne 0\right\} \beta_j$, and $\mathbb{I}\left\{\beta_j = 0\right\}$.
 %
-We can substitute the natural parameters for the prior to simplify further: 
+We can substitute the natural parameters for the prior to simplify further:
 
 \begin{align}
     &\log q(\beta^{*}_j) = \nonumber \\
@@ -239,28 +226,24 @@ We now derive the stochastic variational inference objective for the Bayesian li
 In later section \ref{sec:ch4-blr}, we highlight several practical considerations linked to implementing the algorithm.
 %
 
-\vspace{3mm}
+\newpage
+
 \noindent \textbf{Derivation of Stochastic VI objective for spike-and-slab Bayesian linear regression:}
-\vspace{2mm} 
 %
 
 %
 Stochastic VI tries to find the optimal variational parameters by performing gradient descent directly on the ELBO objective in Equation \ref{elbo_blr},
-%
-
 \begin{equation}
     L_{VI}(\psi, \mu, \sigma) = E[log(P( y \mid \beta,X)] - KL(q_{\psi, \mu, \sigma}(\beta) \mid P(\beta))
 \end{equation}
 
 %
 Assuming the same model as in Equation \ref{spike-and-slab-model} with a fully factorized spike and slab prior, the ELBO can be simplified as follows:
-
 \begin{align}
  L^{Q}_{VI}(\psi, \mu, \sigma) &= \sum\limits^{N}_{n=1} E[log(p(y_{n} \mid \beta))] - KL(q_{\psi, \mu, \sigma}(\beta) \mid P(\beta)) \nonumber \\
  &= \sum\limits^{N}_{n=1} E[log(p(y_{n} \mid \beta))] - \sum\limits^{M}_{j=1} KL(q_{\psi_j, \mu_j, \sigma_j}(\beta_j) \mid P(\beta_j)) \nonumber \\
  &= - \sum\limits^{N}_{n=1} \int \frac{(y_n - \beta^T x_n)^2}{2 \sigma_e^2} q_{\psi, \mu, \sigma}(\beta) d\beta - \sum\limits^{M}_{j=1} KL(q_{\psi_j, \mu_j, \sigma_j}(\beta_j) \mid P(\beta_j)) \label{spike-and-slab-1}
 \end{align}
-
 where $N$ is the number of samples, $M$ is the number of predictors, and $\beta$ are the effect estimates.
 %
 We derive the KL divergence between two spike-and-slab distributions as a special case of the KL divergence between non-overlapping mixture distributions (see Appendix \ref{app:1-KL_divergence} for details).
@@ -270,7 +253,6 @@ We do not have a closed form for the log-likelihood term.
 The usual approach in stochastic variational inference is to replace the integral with an approximate monte-carlo estimate.
 %
 This results in a noisy yet unbiased estimate of the ELBO, which can be shown to converge to a local minimum under the Robbins-Munro condition \cite{robbins1951stochastic} on step-size:
-
 \begin{align}
     L^{Q}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{N}_{n=1} \sum\limits^{S}_{s=1} \frac{(y_n - \beta(s) x_n)^2}{2 \sigma_e^2} + \nonumber \\
     &- \sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right )
@@ -282,7 +264,6 @@ We take $S$ monte-carlo samples from the approximate posterior $\beta(s)$ to cal
 Similar to the use of stochastic optimization in machine learning, we can also have a batched version of the above ELBO, where we update the variational parameters after each mini-batch of data.
 %
 We divide the input data into $B$ equally sized batches and maximize the batched-version of ELBO given below:
-
 \begin{align}
     L^{Q}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{B}_{b=1} \Bigg( \sum\limits^{S}_{s=1} \frac{(y_b - \beta(s) X_b)^2}{2 \sigma_e^2} + \nonumber \\
     &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg)
@@ -306,7 +287,7 @@ The model for Bayesian logistic regression with spike-and-slab prior can be writ
     &\text{\textbf{Likelihood:} } &P(y \mid X, \beta) = \prod_{n=1}^{N} c_n^{y_n} \{1 - c_n\}^{1-y_n}, \hspace{1mm} c_n = \sigma(\beta^T X_n) \nonumber \\
     &\text{\textbf{Prior:} } &P(\beta) = \prod_j P(\beta_j), \hspace{1mm} P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0) \nonumber \\
     &\text{\textbf{Approximate Posterior:} } &q(\beta) = \prod_j q(\beta_j), \hspace{1mm} q(\beta_j) \sim (1-\psi_j)\mathcal{N}(\mu_j, \sigma^2_j) + \psi_j \delta(0)
-    \label{spike-and-slab-model3}
+    \label{spike-and-slab-model3-rep}
 \end{align}
 
 Similar to the linear model in equation \ref{spike-and-slab-model}, $X_n$ and $y_n$ represent the input vector and output values for the $n$-th datapoint.
@@ -314,35 +295,30 @@ Similar to the linear model in equation \ref{spike-and-slab-model}, $X_n$ and $y
 We still assume a spike-and-slab approximate posterior, although it is not conjugate to the logistic regression model, because we empirically find it to still perform well in this case.
 %
 The ELBO for Bayesian logistic regression can be simplified as in the linear case:
-
 \begin{small}
 \begin{align}
  &L^{Bi}_{VI}(\psi, \mu, \sigma) = \sum\limits^{N}_{n=1} E[log(p(y_{n} \mid \beta))] - KL(q_{\psi, \mu, \sigma}(\beta) \mid P(\beta)) \nonumber \\
  &= - \sum\limits^{N}_{n=1} \int \{y_n \log c_n + (1-y_n)\log(1-c_n)\} q_{\psi, \mu, \sigma}(\beta) d\beta - \sum\limits^{M}_{j=1} KL(q_{\psi_j, \mu_j, \sigma_j}(\beta_j) \mid P(\beta_j))
-\label{spike-and-slab-1}
+\label{spike-and-slab-2}
 \end{align}
 \end{small}
-
 where $c_n = \sigma(\beta^T X_n)$, i.e., the output after sigmoid activation.
 %
 We estimate the expected log-likelihood with a Monte Carlo estimate, whereas we write a closed-form solution for the KL divergence term similar to Equation \ref{elbo-loss}.
 %
 The batched version of the ELBO for Bayesian logistic regression can be written as
-%
-
 \begin{align}
     L^{Bi}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{B}_{b=1} \Bigg( \sum\limits^{S}_{s=1} y_b \log(\sigma(\beta^T X_b)) + (1-y_b)\log(1-\sigma(\beta^T X_b)) \nonumber +\\
     &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg)
 \label{elbo-loss2}
 \end{align}
-
 where we take $S$ Monte Carlo samples to approximate the log-likelihood term.
 
 
 \section{Method description}
 \label{sec:ch4-method}
 \subsection{Overview of the method}
-Quickdraws is a mixed-model association algorithm that models phenotypes as a combination of fixed effects, random genetic effects, and random environmental effects (see chapter \ref{sec:ch1-lmm} for introduction to mixed models).
+Quickdraws is a mixed-model association algorithm that models phenotypes as a combination of fixed effects, random genetic effects, and random environmental effects (see section \ref{sec:ch1-lmm} for introduction to mixed models).
 %
 Like all modern GWAS algorithms \cite{loh2015efficient,loh2018mixed,zhou2018efficiently,jiang2019resource,jiang2021generalized,mbatchou2021computationally}, Quickdraws detects association using a two-step approach.
 %
@@ -350,7 +326,7 @@ The first step, sometimes called model fitting, focuses on estimating the random
 
 During the first model fitting step, Quickdraws estimates the variance due to the genetic and environmental random effects.
 %
-For quantitative traits, we estimate variance components for multiple traits in parallel using randomized Haseman-Elston regression (RHE), a fast method-of-moments approach \cite{wu2018scalable,pazokitoroudi2020efficient,kalantzis2023thesis,zhu2024ARGRHE}.
+For quantitative traits, we estimate variance components for multiple traits in parallel using randomized Haseman-Elston regression (RHE), a fast method-of-moments approach \cite{wu2018scalable,pazokitoroudi2020efficient,zhu2024ARGRHE}.
 %
 For binary traits, we instead perform a grid search over a predefined set of heritability values.
 %
@@ -383,7 +359,7 @@ A graphic overview of the method can be found in Figure \ref{fig:qd_overview}.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/thesis_qd_overview.pdf}
-    \caption{\textbf{Overview of the Quickdraws algorithm.} The algorithm is divided into two main steps, first step deals with estimating genetic effects and the second step with calculating and calibrating per-variant test statistics. The first step is further divided into heritability estimation using moment-based methods \cite{kalantzis2023thesis, zhu2024ARGRHE} and Bayesian regression for phenotype prediction which uses stochastic variational inference and GPU-based matrix multiplication for increased scalability. In the test statistics calculation step we use a novel calibration strategy which estimates and matches effective sample size with linear regression model run on unrelated and homogeneous subset of the data, along with approximate Firth logistic regression to correct for biases in binary traits.}
+    \caption{\textbf{Overview of the Quickdraws algorithm.} The algorithm is divided into two main steps, first step deals with estimating genetic effects and the second step with calculating and calibrating per-variant test statistics. The first step is further divided into heritability estimation using moment-based methods \cite{zhu2024ARGRHE} and Bayesian regression for phenotype prediction which uses stochastic variational inference and GPU-based matrix multiplication for increased scalability. In the test statistics calculation step we use a novel calibration strategy which estimates and matches effective sample size with linear regression model run on unrelated and homogeneous subset of the data, along with approximate Firth logistic regression to correct for biases in binary traits. The illustrations were downloaded from Flaticon.}
     \label{fig:qd_overview}
 \end{figure}
 
@@ -400,7 +376,6 @@ We optimize the posterior using stochastic variational inference \cite{hoffman20
 \subsubsection{Quantitative traits}
 
 Quickdraws adopts a Bayesian linear regression model as discussed in section \ref{sec:ch4-theory-mfvi}:
-
 \begin{align}
     &\text{\textbf{Likelihood:} } &P(y \mid X, \beta) \sim \mathcal{N}(\beta^T X, \sigma_e^2) \nonumber \\
     &\text{\textbf{Prior:} } &P(\beta) = \prod_j P(\beta_j), \hspace{1mm} P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0) \nonumber \\
@@ -418,10 +393,9 @@ As we discussed in section \ref{sec:ch4-theory-mfvi}, we also assume a fully-fac
 And, we use stochastic variational inference to directly optimize the evidence lower bound (ELBO).
 %
 The ELBO for Bayesian linear regression with spike-and-slab prior, normal likelihood, and spike-and-slab approximate posterior (derived in section \ref{sec:ch4-theory-svi}) can be approximated as follows: 
-
 \begin{align}
     L^{Q}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{B}_{b=1} \Bigg( \sum\limits^{S}_{s=1} \frac{(y_b - \beta(s) X_b)^2}{2 \sigma_e^2} \ + \nonumber \\
-    &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg) \label{elbo-loss}
+    &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg) \label{elbo-loss-ss}
 \end{align}
 
 In this expression, $L^{Q}_{VI}(\psi, \mu, \sigma)$ is the variational inference objective to be maximized, $\psi, \mu, \sigma$ are the variational parameters to be optimized, $X_b$ and $y_b$ are a genotype matrix and a phenotype vector containing the $b^{th}$ (out of $B$) batch of the data, batched along the number of samples, while $\beta(s)$ are the effect estimates sampled from the approximate posterior $q(\beta)$.
@@ -432,12 +406,10 @@ Note that, contrary to other variational inference schemes, we aim to optimize a
 \subsubsection{Binary traits}
 %
 For binary traits, we adopt a Bayesian logistic regression model, so that the likelihood of Equation \ref{spike-and-slab-model2} becomes:
-
 \begin{align}
     P(y \mid X, \beta) &= \prod_{n=1}^{N} c_n^{y_n} \{1 - c_n\}^{1-y_n}, \hspace{1mm} c_n = \sigma(\beta^T X_n),
     \label{spike-and-slab-model3}
 \end{align}
-
 while the prior and approximate posterior are unchanged.
 %
 In the above, $X_n$ and $y_n$ represent the covariate-adjusted genotype vector and phenotype values for the $n^{th}$ individual, $\sigma$ is the sigmoid function, which maps the output of the regression to a value between $0$ and $1$, and all other quantities are as previously defined.
@@ -445,14 +417,12 @@ In the above, $X_n$ and $y_n$ represent the covariate-adjusted genotype vector a
 We also assume that the approximate posterior has a spike-and-slab distribution; although it is not conjugate to the logistic distribution, we observed it to provide a good approximation to the true posterior.
 %
 The ELBO, which we again optimize using stochastic variational inference, now takes the form: 
-%
-
 \begin{align}
     L^{Bi}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{B}_{b=1} \Bigg( \sum\limits^{S}_{s=1} y_b \log(\sigma(\beta^T X_b)) + (1-y_b)\log(1-\sigma(\beta^T X_b)) \nonumber \ + \\
     &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg)
 \end{align}
 
-where all terms are defined as in Equation \ref{elbo-loss} and derivation is provided in section \ref{sec:ch4-theory-svi}.
+where all terms are defined as in Equation \ref{elbo-loss-ss} and derivation is provided in section \ref{sec:ch4-theory-svi}.
 
 \subsubsection{Practical considerations}
 Stochastic VI methods provide a principled and efficient way to perform variational inference.
@@ -473,12 +443,10 @@ In more detail, the reparameterization trick assumes that distributions can be r
 As an example, consider the case of an isotropic normal distribution.
 %
 To sample from a mean-field normal distribution, we may reparameterize the sample as follows:
-
 \begin{align}
     X &\sim \mathcal{N}(\mu, \sigma^2 I) \implies X = \mu + \epsilon \cdot \sigma, \nonumber \\
     \epsilon &\sim  \mathcal{N}(0, I),
 \end{align}
-
 where $\epsilon$ is i.i.d.\ normal noise with no dependence on $\mu$ and $\sigma$.
 %
 Relying on the reparameterization and treating $\epsilon$ as an independent input, we can differentiate with respect to $\mu$ and $\sigma$.
@@ -494,22 +462,18 @@ Using the original reparamaterization trick \cite{kingma2013auto,blundell2015wei
 The local reparamaterization trick translates the uncertainty on individual effect estimates, $\beta$, into local noise in the output, $\beta^T X$, thus reducing the computational overhead.
 %
 In the simple mean-field Gaussian VI, the local reparameterization trick can be used to sample the outputs directly,
-
 \begin{align}
    &w_{i,j} \sim \mathcal{N}(\mu_{i,j}, \sigma^2_{i,j}), \hspace{4mm} b_{m,j} =  \sum_{i} a_{m,i} w_{i,j},
 \end{align}
-
 where $a_{m,i}$ is the $m$-th input data point and $b_{m,j}$ is the output corresponding to the $m$-th data point in the Bayesian linear regression model.
 %
 $b_{m,j}$ is a weighted-sum of normally distributed random variables, implying that $b_{m,j}$ is also normally distributed, with the following parameters:
-
 \begin{align}
     &w_{i,j} \sim \mathcal{N}(\mu_{i,j}, \sigma^2_{i,j}) \implies b_{m,j} \sim \mathcal{N}(\gamma_{m,j}, \delta^2_{m,j}), \nonumber \\
     &\gamma_{m,j} = \sum_{i}a_{m,i}\mu_{i,j} ,\hspace{4mm}\delta^2_{m,j} =  \sum_{i}a^2_{m,i}\sigma^2_{i,j}.
 \end{align}
 
 In order to sample this output directly, one can apply the original reparameterization trick for the normal distribution:
-
 \begin{align}
    b_{m,j} =  \gamma_{m,j} + \epsilon_{m,j} \delta_{m,j}, \hspace{4mm} \epsilon_{m,j} \sim \mathcal{N}(0, 1).
 \label{eq:reparam_local}
@@ -527,11 +491,10 @@ In the case of mean-field spike-and-slab distributions, we use the central limit
 Note that the input dimension for Bayesian regression in our setup is quite high (usually $>100,000$ markers), justifying this approximation.
 %
 % Thus, the central limit theorem provides a close approximation to the output of the model.
-This idea was first explored in \cite{shayer_learning_2018} to sample discrete weights for binary and ternary neural networks.
+This idea was first explored in \cite{shayer2017learning} to sample discrete weights for binary and ternary neural networks.
 % , relying on Lyapunov central limit theorems.
 %
 We thus reparametrize the output of our model (as described in equations \ref{spike-and-slab-model2} and \ref{spike-and-slab-model3}) as follows:
-
 \begin{align}
     w_{i,j} &\sim p_{i,j}\mathcal{N}(\mu_{i,j}, \sigma^2_{i,j}) + (1 - p_{i,j})\delta(0) \implies b_{m,j} \sim \mathcal{N}(\gamma_{m,j}, \delta_{m,j}),  \nonumber \\
     \gamma_{m,j} &= \sum_{i}a_{m,i}\mu_{i,j}p_{i,j} ,\hspace{4mm}\delta_{m,j} =  \sum_{i}a^2_{m,i}(p_{i,j}\sigma^2_{i,j} + p_{i,j}\mu^2_{i,j} - p^2_{i,j}\mu^2_{i,j}).
@@ -558,7 +521,6 @@ We use both antithetic variates and the local reparameterization trick to reduce
 As described above, the antithetic path for a normally distributed random variable is simply obtained by replacing $\epsilon$ with $-\epsilon$.
 %
 For each forward pass, we thus obtain two Monte Carlo samples for the output of the model as follows: 
-
 \begin{align}
     \beta(s_1) &=  (\sum_{i}a_{m,i}\mu_{i,j} + \sqrt{\sum_{i}a^2_{m,i}(p_{i,j}\sigma^2_{i,j} + p_{i,j}\mu^2_{i,j} - p^2_{i,j}\mu^2_{i,j}} \epsilon ), \nonumber \\
     \beta(s_2) &= (\sum_{i}a_{m,i}\mu_{i,j} - \sqrt{\sum_{i}a^2_{m,i}(p_{i,j}\sigma^2_{i,j} + p_{i,j}\mu^2_{i,j} - p^2_{i,j}\mu^2_{i,j}} \epsilon ), \nonumber \\
@@ -570,7 +532,7 @@ For each forward pass, we thus obtain two Monte Carlo samples for the output of 
 %
 To set the prior variance and likelihood contribution in equations \ref{spike-and-slab-model2} and \ref{spike-and-slab-model3}, we compute an estimate of the narrow-sense heritability for the trait of interest.
 %
-For quantitative traits, we estimate heritability using a parallelized implementation of the randomized Haseman–Elston regression algorithm\cite{wu2018scalable,pazokitoroudi2020efficient} (RHE, PyPI version 1.0) that allows the simultaneous estimation of variance components for multiple traits \cite{kalantzis2023thesis, zhu2024ARGRHE}.
+For quantitative traits, we estimate heritability using a parallelized implementation of the randomized Haseman–Elston regression algorithm\cite{wu2018scalable,pazokitoroudi2020efficient} (RHE, PyPI version 1.0) that allows the simultaneous estimation of variance components for multiple traits \cite{zhu2024ARGRHE}.
 %
 This approach requires a single pass through the data and allows estimating heritability in time linear in $N$ and $M$.
 %
@@ -591,31 +553,22 @@ After estimating the random genetic effects as described in sections \ref{sec:ch
 \subsubsection{Quantitative traits} 
 %
 We model the phenotype of interest as a combination of fixed and random effects, which include genetic effects and environmental effects:
-%
-
 \begin{equation}
     y = \alpha C + x_{test}\beta_{test} + g + \epsilon, \label{eq:lin_lmm}
 \end{equation}
-
-%
 where $y$ is a $N \times 1$ vector of phenotype values, $x_{test}$ is a $N \times 1$ vector of variant values, $C$ is a $N \times C$ matrix of C covariates, $g$ and $\epsilon$ are random genetic and environmental effects.
 %
 Note that using a covariate-adjusted genotype and phenotype by first regressing out any covariates is equivalent to including covariates as fixed effects in the above equation.
 %
 Based on this model, we aim to compute the following $\chi^2$ association statistic (a derivation is provided in section \ref{sec:ch1-lmm}): 
-%
-
 \begin{equation}
    \frac{(x_{test}^T \hat{V}^{-1} y)^2}{x_{test}^T \hat{V}^{-1} x_{test}} \sim \chi^2_1, \label{lmm-chi2}
 \end{equation}
-
 where $\hat{V}$ is the estimated variance matrix, defined as $\hat{V} = \frac{\hat{\sigma_g}^2}{M} X_{GRM}X_{GRM}^T + \hat{\sigma_e}^2 I_N$, $\hat{\sigma_g}^2$ and $\hat{\sigma_e}^2$ are estimated genetic and environmental variance components, and $X_{GRM}$ is the genotype matrix used for model fitting.
 %
 Obtaining the test statistic of Equation \ref{lmm-chi2} requires calculating the inverse of a $N \times N$ matrix, which creates a computational bottleneck for large sample sizes.
 %
 This test statistic can be linked to the best linear unbiased predictor (BLUP) of a trait, by re-writing Equation \ref{lmm-chi2} as described in \cite{loh2015efficient}:
-%
-
 \begin{equation}
     \frac{(x_{test}^T \tilde{y}/\sigma_e^2)^2}{x_{test}^T \hat{V}^{-1} x_{test}} \sim \chi^2_1.
     \label{blup_lmm}
@@ -629,8 +582,6 @@ We adopt a similar strategy and replace the $\tilde{y}$ with $\tilde{y}_{LOCO}$,
 In addition, the denominator $x_{test}^T \hat{V}^{-1} x_{test}$ of Equation \ref{blup_lmm} can be shown to be well approximated using a constant multiple of $x_{test}^T x_{test}$ \cite{svishcheva2012rapid}, further reducing computational costs.
 %
 We can therefore write the test statistics for a quantitative trait up to a constant of proportionality as:
-%
-
 \begin{equation}
     \chi^2_{Q} \propto \frac{(x_{test}^T \tilde{y}_{LOCO})^2}{x_{test}^T x_{test}}.
     \label{chisq_test_2}
@@ -639,34 +590,25 @@ We can therefore write the test statistics for a quantitative trait up to a cons
 \subsubsection{Binary traits}
 %
 For binary traits, we model the association between genotype and phenotype using a logistic mixed model:
-%
-
 \begin{equation}
     logit(p_i) = \alpha C + x_{test}\beta_{test} + g + \epsilon, \label{eq:log_lmm}
 \end{equation}
-
 where $p_i = P(y_i = 1 \mid x_{test}, g, C)$ is the probability of $i^{th}$ individual being a case given $x_{test}$, covariates $C$, and random genetic effects $g$.
 %
 A score test statistic for the null hypothesis $\beta_{test} = 0$ is then computed as $T = x_{test}^T(y - \hat{p})$, where $\hat{p}$ is the estimated mean under the null model.
 %
 The normalized test statistic for logistic mixed model can then be written as: 
-%
-
 \begin{equation}
     T = \frac{x_{test}^T(y - \hat{p})}{\sqrt{x_{test}^T\hat{P}x_{test}}},
 \label{eq:log_lmm1}
 \end{equation}
-
 where $\hat{P} = \hat{V}^{-1} - \hat{V}^{-1} C(C^T\hat{V}^{-1}C)^{-1}C^T\hat{V}^{-1}$ is a dense $N \times N$ matrix with $\hat{V} = \frac{\hat{\sigma_g}^2}{M} X_{GRM}X_{GRM}^T + \hat{W}^{-1}$ and $\hat{W} = diag\{ \hat{p} (1-\hat{p}) \}$.
 %
 Similar to quantitative traits, the test statistic in Equation \ref{eq:log_lmm} can be written up to a constant of proportionality \cite{zhou2018efficiently} as:
-%
-
 \begin{equation}
     T_{B} \propto \frac{x_{test}^T(y - \hat{p})}{\sqrt{x_{test}^T\hat{W}x_{test}}},
 \label{eq:log_lmm2}
 \end{equation}
-
 where $\hat{W}$ is a diagonal matrix (with diagonal entries $\hat{p_i} (1-\hat{p_i})$) from the predictions of the null model in Step 1.
 %
 The test statistic from \ref{eq:log_lmm2} is assumed to be normally distributed, which is often not the case with binary traits that have low prevalence or for rare variants.
@@ -687,7 +629,7 @@ To this end, we estimate the increase in ESS linked to the use of non-infinitesi
 %
 We then adjust the summary association statistics by matching the mean $\chi^2$ statistic minus one \cite{yang2011genomic} with that observed for linear or logistic regression run on a homogeneous subset of unrelated individuals.
 %
-In more detail, we multiply the uncalibrated Quickdraws summary statistics from equations \ref{chisq_test_2} and \ref{eq:log_lmm2} by a correction term $c$, computed as
+In more detail, we multiply the uncalibrated Quickdraws summary statistics from equations \ref{chisq_test_2} and \ref{eq:log_lmm2} by a correction term $c$, computed as:
 \begin{equation}
 c = \frac{\gamma_{rel}\gamma_{blr}\frac{N_{qd}}{N_{lr}}(<\chi_{lr}^2> - 1) + 1}{<\chi_{qd}^2>}.
 \label{eq:calib_main}
@@ -725,7 +667,7 @@ $2^{-\frac{5}{2}} > \psi \geq 2^{-\frac{7}{2}}$ & 0.25 ($2^{\text{nd}}$ degree) 
 $2^{-\frac{7}{2}} > \psi \geq 2^{-\frac{9}{2}}$ & 0.125 ($3^{\text{rd}}$ degree) \\
 \hline
 \end{tabular}
-\caption{Genetic relationship estimates based on KING values.}
+\caption{\textbf{Genetic relationship estimates based on KING values.}}
 \label{tab:my_label}
 \end{table}
 
@@ -870,6 +812,8 @@ We also set the number of training epochs to $80$ for the initial cross-validati
 %
 We observed these hyperparameters to be robust across various sample sizes, providing a good balance between statistical power and computational costs. 
 
+\newpage
+
 \section{Summary of the Quickdraws algorithm}
 \label{sec:ch4-summary}
 %
@@ -880,15 +824,13 @@ We provide a summary of the Quickdraws algorithm, which performs two main steps:
     \begin{enumerate}
         \item \textbf{Variance component estimation:}
         %
-        For quantitative traits, we use a multi-trait version of the RHE-mc algorithm \cite{wu2018scalable,pazokitoroudi2020efficient,kalantzis2023thesis,zhu2024ARGRHE} to obtain estimates of narrow-sense heritability.
+        For quantitative traits, we use a multi-trait version of the RHE-mc algorithm \cite{wu2018scalable,pazokitoroudi2020efficient,zhu2024ARGRHE} to obtain estimates of narrow-sense heritability.
         %
         For binary traits, we directly perform the Bayesian regression (see below) while testing several heritability values in a grid search.
         %
         \item \textbf{Bayesian regression: }
         %
         We perform Bayesian linear/logistic regression to estimate the genetic effects, using a spike-and-slab prior on the effect estimates:
-        %
-        
         \begin{equation}
             P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0).
         \end{equation}
