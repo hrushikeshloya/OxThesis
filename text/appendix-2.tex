@@ -8,8 +8,350 @@
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/gb_merge_sanity_check.png}
-    \caption{\textbf{Comparison of allele frequencies between HGDP+1000GP and ancient samples.} We analyze biallelic SNPs on chromosome 20 within the masked regions. The comparison includes union (``all sites'') and intersection (``overlapping sites'') of SNPs in the two datasets seperately.}
+    \caption{\textbf{Comparison of allele frequencies between HGDP+$1{,}000$GP and ancient samples.} We analyze biallelic SNPs on chromosome 20 within the masked regions. The comparison includes union (``all sites'') and intersection (``overlapping sites'') of SNPs in the two datasets seperately.}
     \label{fig:gb-sanity-check}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_pairwise_coal/gb_pairwise_coal_hgdp_1gp.pdf}
+    \caption{\textbf{Pairwise inverse coalescence rates estimated from Relate trees for the HGDP+$1{,}000$GP dataset.} Genome-wide average inverse cross-coalescence rates between afr (Sub-Saharan Africans), eas (East Asians), nfe (Non-Finnish Europeans), and sas (South Asians).}
+    \label{fig:gb_pairwise_coal_hgdp_1gp}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_pairwise_coal/gb_pairwise_coal_hgdp_1gp_adna.pdf}
+    \caption{\textbf{Pairwise inverse coalescence rates estimated from Relate trees for the HGDP+$1{,}000$GP+aDNA dataset.} Genome-wide average inverse cross-coalescence rates between I9590 (Mota individual, Ethiopia), afr (modern Sub-Saharan Africans), baa001 (Ballito Bay individual, South Africa), and nfe (modern Non-Finnish Europeans).}
+    \label{fig:gb_pairwise_coal_hgdp_1gp_adna}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_pairwise_coal/gb_pairwise_coal_hgdp_1gp_archaic.pdf}
+    \caption{\textbf{Pairwise inverse coalescence rates estimated from Relate trees for the HGDP+$1{,}000$GP+archaics dataset.} Genome-wide average inverse cross-coalescence rates between Denisovan, Neanderthals, afr (modern Sub-Saharan Africans), and nfe (modern Non-Finnish Europeans).}
+    \label{fig:gb_pairwise_coal_hgdp_1gp_archaic}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_pairwise_coal/gb_pairwise_coal_SGDP_v5_annot_ne.pairwise.pdf}
+    \caption{\textbf{Pairwise inverse coalescence rates estimated from Relate trees for the SGDP dataset.} Genome-wide average inverse cross-coalescence rates between Africans, East Asians, South Asians, and West Eurasians.}
+    \label{fig:gb_pairwise_coal_sgdp}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_pairwise_coal/gb_pairwise_coal_3way_europe.pdf}
+    \caption{\textbf{Pairwise inverse coalescence rates estimated from Relate trees for the European subset of the HGDP+$1{,}000$GP+aDNA dataset.} Genome-wide average inverse cross-coalescence rates between Farmers, WHG (Western Hunter-Gatherers), Yamnaya, and nfe (modern Non-Finnish Europeans).}
+    \label{fig:gb_pairwise_coal_europe_3way}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gbr_onlyancient_cmgrid_nohmm_refitld_curve.pdf}
+    \caption{\textbf{Co-ancestry curves for 3-way admixture in Europe.} We refit each co-ancestry curve with an exponential fit to estimate the date of a multi-way admixture event. In this case component 1 represent WHG ancestry, component 2 farmer and component 3 Yamnaya-like ancestry. Inferred admixture dates in the plot are in generations.}
+    \label{fig:gb_eur_3way_refit_ldcurve}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/back_to_africa_corr_with_bmap.pdf}
+    \caption{\textbf{Mean Eurasian-like ancestry proportion stratified by background selection intensity.} The mean Eurasian-like ancestry proportion is calculated across African samples from the HGDP and $1{,}000$GP. The background selection B-map was obtained from \cite{murphy2022broad}. Error bars represent standard errors around the mean. }
+    \label{fig:gb_bta_background_selection}
+\end{figure}
+
+\begin{figure}[htbp]
+    \captionsetup{labelformat=empty} 
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_baa001.pdf}
+        \caption*{(a)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_bantukenya.pdf}
+        \caption*{(b)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_bantusafrica.pdf}
+        \caption*{(c)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_biakapygmy.pdf}
+        \caption*{(d)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Dinka.pdf}
+        \caption*{(e)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_ela001.pdf}
+        \caption*{(f)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_esn.pdf}
+        \caption*{(g)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_gwd.pdf}
+        \caption*{(h)}
+    \end{subfigure}
+
+    % \caption{Common caption for all the figures.}
+\end{figure}
+\addtocounter{figure}{-1}
+
+\begin{figure}[htbp]
+    \captionsetup{labelformat=empty} 
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_I10871.pdf}
+        \caption*{(i)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_I5950.pdf}
+        \caption*{(j)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Ju_hoan_North.pdf}
+        \caption*{(k)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Khomani_San.pdf}
+        \caption*{(l)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Luo.pdf}
+        \caption*{(m)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_lwk.pdf}
+        \caption*{(n)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_mandenka.pdf}
+        \caption*{(o)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Masai.pdf}
+        \caption*{(p)}
+    \end{subfigure}
+
+    % \caption{Common caption for all the figures.}
+\end{figure}
+\addtocounter{figure}{-1}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_mbutipygmy.pdf}
+        \caption*{(q)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_msl.pdf}
+        \caption*{(r)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_new001.pdf}
+        \caption*{(s)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_san.pdf}
+        \caption*{(t)}
+    \end{subfigure}
+
+    \vskip\baselineskip
+    
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_Somali.pdf}
+        \caption*{(u)}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figures/gb_bta/segment_length/segment_lengths_histogram_yoruba.pdf}
+        \caption*{(v)}
+    \end{subfigure}
+    \caption{\textbf{Eurasian-like ancestry segment length distribution across African populations.} Panels (a-v) show histograms of Eurasian-like ancestry segment lengths for each African population analyzed in the HGDP, $1{,}000$GP, and SGDP datasets. Each panel title includes the population label, the reciprocal of the African proportion, and the mean segment length (an estimate of single-event admixture date in generations). The x-axis is truncated at 5 cM.}
+     \label{fig:gb_segment_histogram}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_15.pdf}
+ \caption{\textbf{Detecting Neanderthal ancestry in Eurasian populations with GhostBuster.} (a) Proportion of Neanderthal ancestry estimated for two East Asian (Han, Japanese), two European (French, Russian), and two South Asian (Pathan, Brahui) populations from the HGDP+$1{,}000$GP dataset. (b) Chromosome-wide average proportion of Neanderthal ancestry. (c) Genome-wide average proportion of Neanderthal ancestry along the genome. (d) Average Neanderthal ancestry across five previously identified archaic deserts \cite{sankararaman2016combined,vernot2016excavating}. In panel (c), the green dashed line represents the genome-wide average Neanderthal ancestry. In panel (d), the dashed lines mark the start and end positions of the deserts. Regions within and 100 kb around the ENCODE blacklist \cite{amemiya2019encode} have been excluded from the analysis. Panel (a) overlays individual genome-wide Neanderthal ancestry data points for each sample on the violin plots. The positions shown in panel (d) are based on the hg38 genome build. }
+    \label{fig:gb-bta-nea-eurasians}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/gb_bta/gb_real_bta_18.pdf}
+    \caption{\textbf{Joint-regression of Neanderthal and Eurasian-like ancestry in Africans.} (a) Mean coefficient estimates and confidence intervals from the joint regression analysis of genome-wide Neanderthal ancestry proportions against Eurasian-like ancestry proportions, divided into younger and older Eurasian-like segments. (b) Genome-wide residual Neanderthal ancestry vs. Eurasian-like ancestry proportions across all African samples. The residual Neanderthal proportion is defined as the genome-wide Neanderthal ancestry proportion minus the estimated proportion attributed to other Eurasian-like ancestry, as inferred from the joint regression. Error bars in (a) represent 95\% confidence intervals around the mean estimated coefficients using least squares. Error bars in (b) represent the population-specific standard deviation of Eurasian and Neanderthal proportions, while the dashed line in (b) indicating the least squares fit.}
+    \label{fig:gb-bta-nea-supp2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/gb_bta/gb_real_bta_17.pdf}
+    \caption{\textbf{Dating Eurasian-like segments carrying Neanderthal ancestry in Africans.} Coancestry curves were generated by considering only Eurasian-like segments that carry Neanderthal ancestry (with posterior probability $\geq 0.1$) at at least one position within the segment. Eurasian-like segments that did not carry any Neanderthal ancestry were treated as African (non-Eurasian-like) ancestry. The figure displays the log-likelihoods corresponding to various admixture models, including one-date, two-date, and constant continuous migration models. Single admixture model fits and two-date admixture model fits are shown, with populations sorted from highest to lowest proportion of Eurasian-like ancestry. The log-likelihood values are aggregated across $20$ jackknife runs. For the two-date admixture model, pink represents the younger admixture date, and purple represents the older admixture date. Admixture dates in the plot are in generations.}
+    \label{fig:gb-bta-nea-supp3}
+\end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/gb_bta/gb_real_bta_17.pdf}
+%     \caption{\textbf{Comparison of dating Eurasian-like segments in Africans.} Coancestry curves were generated by considering only Eurasian-like segments that carry Neanderthal ancestry (with posterior probability $\geq 0.1$) at at least one position within the segment. Eurasian-like segments that did not carry any Neanderthal ancestry were treated as African (non-Eurasian-like) ancestry. The figure displays the log-likelihoods corresponding to various admixture models, including one-date, two-date, and constant continuous migration models. Single admixture model fits and two-date admixture model fits are shown, with populations sorted from highest to lowest proportion of Eurasian-like ancestry. For the two-date admixture model, pink represents the younger admixture date, and purple represents the older admixture date.}
+%     \label{fig:gb_bta_dating_compare}
+% \end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_16.pdf}
+    \caption{\textbf{Comparison of observed Neanderthal proportion with theoretical expectations under the assumption of no Neanderthal ancestry in older Eurasian admixture.} The posterior probability of being Neanderthal is measured for Eurasian-like segments in Africa with segment sizes less than or equal to the specified value (x-axis). Observed values are compared to theoretical Neanderthal proportions assuming two admixture events, where only the younger event contributes to Neanderthal ancestry. Shaded regions represent 95\% confidence intervals for the observed Neanderthal proportion and theoretical estimates, accounting for variability in admixture dating. The x-axis is limited to 5 cM.}
+    \label{fig:gb-bta-nea-supp}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/gb_bta/gb_real_bta_ws_vs_sw.pdf}
+    \caption{\textbf{Evolution of number of weak to strong mutations relative to strong to weak mutations across populations.} Ratio of number of weak to strong mutations divided by strong to weak mutations across various continental groups, including NFE (non-Finnish Europeans), SAS (South Asians), EAS (East Asians), and MID (Middle Eastern and North African populations), AFR (sub-Saharan Africans). CpG sites are excluded from calling both weak and strong mutations. Shaded regions indicate 95\% confidence intervals derived from $1{,}000$ bootstrap replicates, while the dashed line represents the baseline of no enrichment. }
+    \label{fig:gb_bta_ws_vs_sw}
+\end{figure}
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_9.pdf}
+    \caption{\textbf{Enrichment of TCC to TTC mutation rates across African ancestral components in diverse African populations.} Enrichment of TCC to TTC mutation rates in younger and older Eurasian-like segments compared to non-Eurasian-like (African) segments across 11 modern African populations (see population descriptions in \ref{tab:african_populations_1}). Shaded regions indicate 95\% confidence intervals derived from $1{,}000$ bootstrap replicates, while the dashed line represents the baseline of no enrichment.
+    }
+    \label{fig:gb-mut-tcc-pops}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_11.pdf}
+    \caption{\textbf{Enrichment of weak to strong mutation rates across African ancestral components in diverse African populations.} Enrichment of weak to strong mutation rates in younger and older Eurasian-like segments compared to non-Eurasian-like (African) segments across 11 modern African populations (see population descriptions in \ref{tab:african_populations_1}). Shaded regions indicate 95\% confidence intervals derived from $1{,}000$ bootstrap replicates, while the dashed line represents the baseline of no enrichment.
+    }
+    \label{fig:gb-mut-ws-pops}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/gb_bta/mutrates_output_bta_young_afr.pdf}
+        \caption{}
+        \label{fig:gb-mutational-bta-young}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/gb_bta/mutrates_output_bta_old_afr.pdf}
+        \caption{}
+        \label{fig:gb-mutational-bta-old}
+    \end{subfigure}
+    
+    \caption{\textbf{Mutation count enrichment across all 96 trimer types in Eurasian-like segments within African individuals from the HGDP+$1{,}000$GP dataset.} (a) Younger Eurasian-like segments and (b) older Eurasian-like segments are shown. The y-axis represents the enrichment, calculated relative to the mutation count in non-Eurasian-like segments of African individuals. Shaded regions indicate 95\% confidence intervals derived from $1{,}000$ bootstrap replicates, while the dashed line represents the baseline of no enrichment.}
+    \label{fig:gb-mutational-all-bta}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_source_afronly.pdf}
+    \caption{\textbf{Coalescence rates between Eurasian-like and non-Eurasian-like segments in Africans.} Pairwise coalescence rate matrices and corresponding UPGMA dendrograms for (a-b) Younger Eurasian-like segments and (c-d) Older Eurasian-like segments. The coalescence rates correspond to the epoch spanning 10,000 to 15,848 years.}
+    \label{fig:gb_bta_source_afronly}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_bta/gb_real_bta_14.pdf}
+    \caption{\textbf{Coalescence rates with modern and ancient samples.} Each bar plot shows the coalescence rate for the epoch spanning $10{,}000$–$15{,}848$ years between Eurasian-like segments from the younger admixture date and various modern and ancient samples. Only the top 25 groups are displayed. Error bars represent 95\% confidence intervals, calculated from 100 bootstrap samples.}
+    \label{fig:gb-bta-source-supp}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/gb_real_deep_2.pdf}
+    \caption{\textbf{Held-out likelihood and expected $R^2$ for the deep admixture event across African populations.} The held-out likelihood was calculated by fitting the EM algorithm on chromosome 1 and testing on chromosome 2. The number of components varied between 1 and 4 or 5.}
+    \label{fig:gb_deepadmix_cv_all}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/deepadmix_filtered_strict_admixture_dates.pdf}
+    \caption{\textbf{Dating the ancestral components of the deep admixture event.} This analysis is similar to Figure \ref{fig:gb_deepadmix_3}, but with local ancestry segments identified as Eurasian-like in the back-to-Africa analysis masked. Additionally, regions within $5$ cM of these segments were also excluded. The plot displays the log-likelihoods for one-date, two-date, and continuous admixture models across populations, as well as the inferred admixture date for the single-date admixture model. The log-likelihood values are aggregated across $20$ jackknife runs. The legend remains identical to that in Figure \ref{fig:gb_deepadmix_3}. Admixture dates in the plot are in generations. }
+    \label{fig:gb_real_deep_dating_wobta}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/gb_real_deep_sanity1.pdf}
+    \caption{\textbf{Comparison of GhostBuster runs with and without the HMM.} Chromosome 1 of San individuals from the HGDP+$1{,}000$GP dataset was decomposed, fixing the number of components to 2. The HMM was turned off, treating each site independently for local ancestry calculation. (a) shows the inverse coalescence rates when the HMM is turned off, and (b) compares the correlation in local ancestry inferred with and without the HMM. Plot (b) is based on binning the posterior probabilities into 500 equally spaced bins and calculating the average posterior within each bin.}
+    \label{fig:gb_deepadmix_sanity1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/gb_real_deep_sanity2.pdf}
+    \caption{\textbf{Comparison of GhostBuster runs with and without Eurasian reference samples.} Chromosome 1 of San individuals from the HGDP+$1{,}000$GP dataset was analyzed, fixing the number of components to 2. The Eurasian samples were excluded from the reference panel prior to ancestry decomposition. (a) shows the inverse coalescence rates when only African populations were used as the reference, and (b) compares the correlation in local ancestry inferred with and without Eurasian samples in the reference panel. Plot (b) is based on binning the posterior probabilities into 500 equally spaced bins and calculating the average posterior within each bin.}
+    \label{fig:gb_deepadmix_sanity2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/mutrates_output_deepadmix_afr.pdf}
+    \caption{\textbf{Mutation count enrichment across all 96 trimer types in OOA-like segments within African individuals from the HGDP+$1{,}000$GP dataset.} The y-axis represents the enrichment, calculated relative to the mutation count in non-OOA-like segments of African individuals. Shaded regions indicate 95\% confidence intervals derived from $1{,}000$ bootstrap replicates, while the dashed line represents the baseline of no enrichment.}
+    \label{fig:gb-mutational-all-deep}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/gb_deepadmix/gb_real_deep_prdm9c_tree.pdf}
+    \caption{\textbf{Relate-inferred tree at the PRDM9 gene.} 
+    Relate-inferred tree at chromosome $5$:$23{,}532{,}534$ (hg38 build), highlighting the PRDM9-C allele (rs6889665) as a star on the lineage along with the descendant population composition. The genealogy was subset to include Africans (OOA-like and Non-OOA-like), East Asians (eas), South Asians (sas), and non-Finnish Europeans (nfe).}
+    \label{fig:gb_deep_prdm9c_tree}
+\end{figure}
+
+\begin{figure}
+     \centering
+     \includegraphics[width=\textwidth]{figures/gb_deepadmix/gb_real_deep_6.pdf}
+     \caption{\textbf{Manhattan plots for some blood traits.}
+     (a) Apolipoprotein B, (b) Gamma Glutamyl Transferase (GGT), (c) Total Bilirubin. The GWAS summary statistics was calculated using Quickdraws (more details in chapter \ref{ch:5-qd-result}). The green line indicates $P = 1 \times 10^{-20}$.
+    }
+    \label{fig:gb_anchor_man}
 \end{figure}
 
 \begin{figure}[h!]
@@ -348,6 +690,56 @@ atp002 & 4,746 & Spain & 11.3
 \end{longtable}
 
 \begin{table}[h!]
+    \centering
+\caption{\textbf{Admixture date estimates for the back to Africa admixture event in Africans.} Estimated dates for the younger admixture event based on two-date co-ancestry curve fitting, measured in generations. The lower and upper bounds represent the 95\% confidence intervals derived from 20 jackknife replicates during the co-ancestry curve fitting process.}
+\label{tab:gb_bta_admix_dates}
+    \begin{tabular}{|l|c|c|c|} \hline 
+         \textbf{Population}&  \textbf{Mean}&  \textbf{Lower bound}& \textbf{Upper bound}\\ \hline 
+         Masai&  $57.7$&  $49.5$& $66.7$\\ \hline 
+         Bantu Kenya&  $103.4$&  $93.2$& $113.6$\\ \hline 
+         LWK&  $108.9$&  $100.3$& $117.8$\\ \hline 
+         Luo&  $32.7$&  $16.3$& $68.1$\\ \hline 
+         Khomani San&  $14.9$&  $1$& $41.4$\\ \hline 
+         Ju Hoan North&  $105.2$&  $82.1$& $126.8$\\ \hline 
+         GWD&  $130.1$&  $125.3$& $141.9$\\ \hline 
+         Mandenka&  $130.6$&  $119.2$&$138.9$\\ \hline 
+         San&  $81.8$&  $75.2$& $88.9$\\ \hline
+         Dinka& $108.0$& $87.9$&$213.5$\\\hline
+         Bantu SAfrica& $162.7$& $149.4$&$176.7$\\\hline
+         MSL& $148.9$& $143.1$&$160.1$\\\hline
+         ESN& $187.5$& $178.2$&$227.7$\\\hline
+         Yoruba& $233.6$& $214.3$&$261.3$\\\hline
+         Mbuti& $175.8$& $134.2$&$254.3$\\\hline
+         Biaka& $165.7$& $143.4$&$192.2$\\\hline
+    \end{tabular} 
+\end{table}
+
+\begin{table}[h!]
+    \centering
+\caption{\textbf{Admixture date estimates for the deep admixture event in Africans.} Estimated dates for the deep admixture event based on two-date co-ancestry curve fitting, measured in generations. The lower and upper bounds represent the 95\% confidence intervals derived from 20 jackknife replicates during the co-ancestry curve fitting process.}
+\label{tab:gb_deep_admix_dates}
+    \begin{tabular}{|l|c|c|c|} \hline 
+         \textbf{Population}&  \textbf{Mean}&  \textbf{Lower bound}& \textbf{Upper bound}\\ \hline 
+         Dinka&  $1{,}353.7$&  $1{,}270.1$& $1{,}433.8$\\ \hline 
+         Luo&  $1{,}181.2$&  $1{,}139.5$& $1{,}205.8$\\ \hline 
+         ESN&  $1{,}384.2$&  $1{,}354.5$& $1{,}436.4$\\ \hline 
+         Yoruba&  $1{,}402.8$&  $1{,}377.4$& $1{,}446.0$\\ \hline 
+         Masai&  $841.3$&  $792.0$& $899.1$\\ \hline 
+         MSL&  $1{,}362.7$&  $1{,}338.6$& $1{,}396.8$\\ \hline 
+         GWD&  $1{,}343.1$&  $1{,}312.2$& $1{,}367.3$\\ \hline 
+         Mandenka&  $1{,}253.0$&  $1{,}225.6$& $1{,}283.9$\\ \hline 
+         LWK&  $1{,}194.2$&  $1{,}168.5$& $1{,}211.1$\\ \hline
+         Bantu Kenya& $1{,}181.7$& $1{,}153.4$& $1{,}205.6$\\\hline
+         Bantu SAfrica& $1{,}229.7$& $1{,}210.5$& $1{,}249.2$\\\hline
+         Biaka& $1{,}233.7$& $1{,}221.7$& $1{,}251.3$\\\hline
+         Mbuti& $1{,}196.0$& $1{,}169.3$& $1{,}217.5$\\\hline
+         Ju Hoan North& $1{,}008.1$& $957.9$& $1{,}067.8$\\\hline
+         San& $1{,}021.2$& $989.6$& $1{,}051.7$\\\hline
+         Khomani San& $819.5$& $759.5$& $909.4$\\\hline
+    \end{tabular} 
+\end{table}
+
+\begin{table}[h!]
 \centering
 \caption{\textbf{False positive rates (FPR) for FastGWA in quantitative trait simulations with up to 460,000 self-identified Europeans.} The table presents the FPR for FastGWA under various sample sizes, controlling for residual population stratification by adjusting the number of included principal components (PCs) or by omitting them entirely. The polygenicity of the simulated trait is fixed at 1\%. S.E. refers to the standard error, and * indicates a Bonferroni-significant t-test p-value. The significance threshold for the FPR was set at 0.005. Each simulation condition varied one of the following baseline parameters: sample size (N = 460k), ancestry differences explaining 5\% of phenotypic variance, and the use of 10 PCs to correct for stratification.}
 \begin{tabular}{|l|c|c|c|}
@@ -387,15 +779,15 @@ N = 460k & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ \hline
 30850 &  Testosterone & 0.03 & 355373 \\
 1438 & Bread intake & 0.053 & 396396\\
 874 & Duration of walks & 0.054 & 346657\\
-30750 &  Glucose & 0.088 & 359138 \\
+30740 &  Glucose & 0.088 & 359138 \\
 2217 & Age started wearing glasses & 0.092 & 349337\\
-30710 &  Mean corp. haemoglobin conc. & 0.101 & 398336 \\
+30060 &  Mean corp. haemoglobin conc. & 0.101 & 398336 \\
 30810 &  Phosphate & 0.149 & 358861 \\
-30790 &  LDL direct & 0.152 & 390888  \\
+30780 &  LDL direct & 0.152 & 390888  \\
 3064 & Peak expiratory flow (PEF) & 0.152 & 370024\\
 30690 &  Cholesterol & 0.157 & 391567 \\
-30760 &  Haemoglobin conc & 0.158 & 398342 \\
-30020 &  Haematocrit \% & 0.161 & 398343 \\
+30020 &  Haemoglobin conc & 0.158 & 398342 \\
+30030 &  Haematocrit \% & 0.161 & 398343 \\
 46 & Hand grip strength (left) & 0.162 & 403800\\
 47 & Hand grip strength (right) & 0.164 & 403850\\
 30600 &  Albumin & 0.168 & 359528 \\
@@ -408,36 +800,36 @@ N = 460k & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ \hline
 30200 &  Neutrophill \% & 0.19 & 397665 \\
 4080 & Systolic blood pressure & 0.192 & 379174 \\
 102 & Pulse rate & 0.194 & 379181 \\
-30120 &  Lymphocyte \% & 0.196 & 397665 \\
-30210 &  Creatinine & 0.198 & 391377  \\
+30180 &  Lymphocyte \% & 0.196 & 397665 \\
+30700 &  Creatinine & 0.198 & 391377  \\
 30830 &  SHBG & 0.2 & 356165 \\
 30880 &  Urate & 0.206 & 391102 \\
 30630 &  Apolipoprotein A & 0.213 & 357411 \\
-30730 &  Eosinophill count & 0.213 & 397661 \\
-30180 &  Lipoprotein A & 0.22 & 312270 \\
+30150 &  Eosinophill count & 0.213 & 397661 \\
+30790 &  Lipoprotein A & 0.22 & 312270 \\
 30140 &  Neutrophill count & 0.22 & 397661  \\
-30190 &  Monocyte \% & 0.221 & 397665 \\
+30130 &  Monocyte \% & 0.221 & 397665 \\
 30870 &  Triglycerides & 0.234 & 391260 \\
-30740 &  Gamma glutamyltransferase & 0.24 & 391372 \\
-30700 &  C-reactive protein & 0.241 & 390752 \\
+30730 &  Gamma glutamyltransferase & 0.24 & 391372 \\
+30710 &  C-reactive protein & 0.241 & 390752 \\
 20257 & Forced vital capacity (FVC) Z-score & 0.242 & 328403 \\
-30030 &  Glycated haemoglobin & 0.245 & 391597  \\
-30290 &  HDL cholesterol & 0.248 & 359370 \\
-30150 &  Eosinophill \% & 0.251 & 397665 \\
+30750 &  Glycated haemoglobin & 0.245 & 391597  \\
+30760 &  HDL cholesterol & 0.248 & 359370 \\
+30210 &  Eosinophill \% & 0.251 & 397665 \\
 30130 &  Monocyte count & 0.253 & 397661 \\
-30780 &  Immature reticulocyte fraction & 0.26 & 391990 \\
+30280 &  Immature reticulocyte fraction & 0.26 & 391990 \\
 30250 &  Reticulocyte count & 0.26 & 392210 \\
 20256 & Forced expiratory volume (FEV1) Z-score & 0.263 & 328403\\
 30070 &  Red blood cell distribution width & 0.264 & 398342  \\
 30260 &  Mean reticulocyte vol & 0.266 & 392211 \\
 30240 &  Reticulocyte \% & 0.267 & 392210 \\
 20258 & FEV1/FVC ratio Z-score & 0.269 & 328403\\
-30050 &  Lymphocyte count & 0.269 & 397661 \\
+30120 &  Lymphocyte count & 0.269 & 397661 \\
 48 & Waist circumference & 0.277 & 404969\\
 30010 &  Red blood cell count & 0.279 & 398343 \\
 30610 &  Alkaline phosphatase & 0.279 & 391586 \\
-30770 &  High light scatter reticulocyte count & 0.289 & 391989 \\
-30280 &  IGF-1 & 0.29 & 389525 \\
+30300 &  High light scatter reticulocyte count & 0.289 & 391989 \\
+30770 &  IGF-1 & 0.29 & 389525 \\
 30270 &  Mean sphered cell vol & 0.293 & 391990 \\
 23115 & Leg fat \% (left) & 0.294 & 399130\\
 23111 & Leg fat \% (right) & 0.294 & 399151\\
@@ -445,7 +837,7 @@ N = 460k & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ \hline
 23127 & Trunk fat \% & 0.302 & 398940\\
 23119 & Arm fat \% (right) & 0.302 & 399098\\
 23123 & Arm fat \% (left) & 0.305 & 399037\\
-30300 &  High light scatter reticulocyte \% & 0.306 & 391990 \\
+30290 &  High light scatter reticulocyte \% & 0.306 & 391990 \\
 23099 & Body fat \% & 0.310 & 398955\\
 49 & Hip circumference & 0.318 & 404972\\
 30090 &  Platelet crit & 0.326 & 398154 \\
@@ -458,9 +850,9 @@ N = 460k & 0.00586 & 4.11 x 10$^{-5}$ & 8 x 10$^{-38}$ * \\ \hline
 30080 &  Platelet count & 0.373 & 398339   \\
 21002 & Weight & 0.381 & 405018 \\
 30040 &  Mean corp. vol & 0.414 & 398342  \\
-23105 & Basal metabolic rate & 0.419 & 399169\\
+23105 & Basal metabolic rate & 0.419 & 399169 \\
 23102 & Whole body water mass & 0.428 & 399179 \\
-30060 &  Mean corp. haemoglobin & 0.432 & 398339 \\
+30050 &  Mean corp. haemoglobin & 0.432 & 398339 \\
 30100 &  Mean platelet vol & 0.448 & 398334 \\
 50 & Standing height & 0.745 & 405035 \\
 \end{longtable}

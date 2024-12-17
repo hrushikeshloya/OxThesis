@@ -4,7 +4,7 @@
 
 \section{Chapter overview}
 
-In this chapter we apply Quickdraws to simulated and real phenotypes in the UK Biobank \cite{bycroft2018uk}. We start by discussing data and quality control steps we used to perform GWAS in the UK Biobank in section \ref{sec:ch5-data}. In order to assess the calibration and demonstrate statistical power we then perform simulation studies in section \ref{sec:ch5-sim} across a wide variety of designs varying relatedness, population structure, prevalence and the genetic architecture of the simulated trait. Subsequently in section \ref{sec:ch5-ukb}, we apply Quickdraws on 79 quantitative and 50 self-reported disease phenotypes from UK Biobank where we show Quickdraws leads to state-of-the-art statistical power while controlling for false positives. We perform a replication analysis with summary statistics from external biobanks like Biobank Japan and Finngen, followed by predictive power analysis and comparing with PGS methods. Finally in section \ref{sec:ch5-cost}, we perform a thorough cost analysis on UK Biobank's cloud platform comparing Quickdraws against recent scalable methods like FastGWA and Regenie. We conclude the chapter with discussing the key findings and directions for future work.
+In this chapter we apply Quickdraws to simulated and real phenotypes in the UK Biobank \cite{bycroft2018uk}. We start by discussing data and quality control steps we used to perform GWAS in the UK Biobank in Section \ref{sec:ch5-data}. In order to assess the calibration and demonstrate statistical power we then perform simulation studies in Section \ref{sec:ch5-sim} across a wide variety of designs varying relatedness, population structure, prevalence and the genetic architecture of the simulated trait. Subsequently in Section \ref{sec:ch5-ukb}, we apply Quickdraws on 79 quantitative and 50 self-reported disease phenotypes from UK Biobank where we show Quickdraws leads to state-of-the-art statistical power while controlling for false positives. We perform a replication analysis with summary statistics from external biobanks like Biobank Japan and Finngen, followed by predictive power analysis and comparing with PGS methods. Finally in Section \ref{sec:ch5-cost}, we perform a thorough cost analysis on UK Biobank's cloud platform comparing Quickdraws against recent scalable methods like FastGWA and REGENIE. We conclude the chapter with discussing the key findings and directions for future work.
 
 \section{Data and quality control}
 \label{sec:ch5-data}
@@ -15,7 +15,7 @@ We used the UK Biobank SNP array data for $405{,}088$ white British samples \cit
 %
 We filtered the set of available autosomal variants to have minor allele frequency (MAF) $\geq 1\%$, Hardy-Weinberg equilibrium $p \geq 1 \times 10^{-15}$, and a genotyping rate above $99\%$, obtaining a set of $458{,}620$ markers.
 %
-We used these markers as input for the model-fitting step of BOLT-LMM, Regenie, and Quickdraws, while for Saige we performed LD pruning using PLINK (v1.9 \cite{purcell2007plink,chang2015second} setting \texttt{--window\_size} to 50kb, \texttt{--step\_size} to 5, and the $R^2$ threshold to $0.05$) as recommended, which resulted in $89,177$ markers.
+We used these markers as input for the model-fitting step of BOLT-LMM, REGENIE, and Quickdraws, while for SAIGE we performed LD pruning using PLINK (v1.9 \cite{purcell2007plink,chang2015second} setting \texttt{--window\_size} to $50$kb, \texttt{--step\_size} to 5, and the $R^2$ threshold to $0.05$) as recommended, which resulted in $89,177$ markers.
 %
 We computed association statistics on a much larger set of ${\sim}13.3$ imputed variants with MAF $\geq 0.1\%$ and INFO score $\geq 0.8$.
 %
@@ -38,7 +38,7 @@ For GWAS, we considered up to $49{,}441$ European participants (based on self-re
 %
 We ran Quickdraws with covariates including the top $20$ principal components \cite{bycroft2018uk}, $age$, $sex$, $age^2$, $age*sex$, $age^2*sex$, smoking status, collection site, batch, and time difference between blood sampling and protein measurement.
 %
-We also ran Regenie on $250$ randomly sampled plasma proteins, focusing on a subset of $N=43{,}293$ individuals overlapping the British ancestry subgroup described in \cite{bycroft2018uk}.
+We also ran REGENIE on $250$ randomly sampled plasma proteins, focusing on a subset of $N=43{,}293$ individuals overlapping the British ancestry subgroup described in \cite{bycroft2018uk}.
 %
 Association was performed in independent batches of $250$ traits in parallel.
 
@@ -54,7 +54,7 @@ Our analyses made use of the following filtering criteria:
     Quantitative phenotypes are mean centered, and quantile normalized to a normal distribution.
     \item \textbf{Covariates:} we regress covariates (top $20$ PCs, age, sex, age$^2$, age$\times$sex, age$^2\times$sex, smoking status) from both genotype and phenotype on the fly, which is equivalent to including covariates as fixed effects in the model.
     %
-    We also remove individuals with any missing covariates (`complete case analysis').
+    We also remove individuals with any missing covariates (``complete case analysis'').
 \end{enumerate}
 
 \section{Performance in simulated data}
@@ -74,7 +74,7 @@ In each setting, we simulated $50$ quantitative and $50$ binary traits with narr
 %
 
 %
-We also simulated phenotypes generated using different distributions of genetic effects, including spike-and-slab, mixture of Gaussians, Laplace, and Gaussian.
+We also simulated phenotypes generated using different distributions of genetic effects, including spike-and-slab, mixture of Gaussian, Laplace, and Gaussian.
 %
 To simulate effects following a spike-and-slab prior, given a polygenicity value $p$ and $M$ variants, we randomly selected $Mp$ causal variants (out of $M = 512,828$ variants) and randomly sampled their effect sizes from a Gaussian distribution. 
 %
@@ -93,9 +93,9 @@ We simulated population stratification and shared environment between close rela
 
 where $\sum\limits_{j=1}^{Mp} G_{i,j}\beta_j$ is a genetic effect explaining $40\%$ of trait variance, $A\gamma$ is a population stratification term determined using self-reported ancestry, $\tau$ is the shared environmental effect, simulated by assigning a Gaussian draw to closely related individuals, and $\epsilon$ is the residual environmental effect, with variance equal to $h^2_e$.
 %
-To simulate from a mixture-of-Gaussians prior, we added an extra parameter $f \in {0.05, 0.5}$, which controls the fraction of variance explained by the Gaussian with smaller variance.
+To simulate from a mixture-of-Gaussian prior, we added an extra parameter $f \in {0.05, 0.5}$, which controls the fraction of variance explained by the Gaussian with smaller variance.
 %
-For Laplace and Gaussian priors, we assumed polygenicity $p = 1$, and sampled the effects $\beta_j$ in equation \ref{eq:sim_gen} from either distribution.
+For Laplace and Gaussian priors, we assumed polygenicity $p = 1$, and sampled the effects $\beta_j$ in Equation \ref{eq:sim_gen} from either distribution.
 %
 
 \begin{figure}
@@ -109,7 +109,7 @@ In our simulations, we set the variance explained due to population stratificati
 %
 To simulate a realistic MAF-dependent trait architecture, we set $c_f \propto (2f(1-f))^{\alpha}$, where $f$ is the minor allele frequency and $\alpha = -0.3$ \cite{zeng2018signatures,schoech2019quantification}.
 %
-For binary traits, we adopted a liability threshold model by synthetizing a quantitative phenotype as in Equation \ref{eq:sim_gen} and setting individuals above/below a given prevalence value as cases/controls.
+For binary traits, we adopted a liability threshold model by synthesizing a quantitative phenotype as in Equation \ref{eq:sim_gen} and setting individuals above/below a given prevalence value as cases/controls.
 %
 We varied the prevalence in binary traits from 0.3 to 0.001 and the amount of relatedness and population structure based on the following four simulation conditions:
 \begin{itemize}
@@ -133,7 +133,7 @@ We varied the prevalence in binary traits from 0.3 to 0.001 and the amount of re
     %
     \item \textbf{Pan-ancestry structure (PAS):}
     %
-    To simulate population structure comprising multiple ancestry descriptors found in the UK Biobank, we included $7{,}500$ self-reported African samples, $7{,}500$ self-reported South Asian samples, along with $35{,}000$ unrelated British samples, as defiend in \cite{bycroft2018uk}.
+    To simulate population structure comprising multiple ancestry descriptors found in the UK Biobank, we included $7{,}500$ self-reported African samples, $7{,}500$ self-reported South Asian samples, along with $35{,}000$ unrelated British samples, as defined in \cite{bycroft2018uk}.
     %
     This set comprised $425$ first-degree and $173$ second-degree relative pairs, corresponding to $1.1 \times$ and $1.2 \times$ more first- and second-degree pairs than randomly sampling from the subset of related white British individuals.
     %
@@ -143,7 +143,7 @@ We varied the prevalence in binary traits from 0.3 to 0.001 and the amount of re
 \subsection{False positive rate evaluation}
 We verified the calibration of Quickdraws and the other methods by considering varying levels of polygenicity, relatedness, population structure, and the prevalence of binary traits.
 %
-We measured false positive rates (FPRs), calculated as the proportion of null variants (i.e., variants on even chromosomes) below a chosen p-value threshold. 
+We measured false positive rates (FPRs), calculated as the proportion of null variants (that is, variants on even chromosomes) below a chosen p-value threshold. 
 %
 
 %
@@ -153,7 +153,7 @@ In these experiments, linear regression was not robust to the presence of relate
 %
 Like other mixed-model methods, Quickdraws remained calibrated, not showing significant inflation in any of the simulation conditions we considered.
 %
-Regenie produced significantly inflated test statistics in data sets including high levels of relatedness (t-test $p < 1.5 \times 10^{-4}$, see GB-rel+ in Figure \ref{fig:qd_sim_fpr_qt}), which comprise $1{,}250$ first-degree and $1{,}250$ second-degree relative pairs (corresponding to ${\sim}7.3 \times$ and ${\sim}4.8 \times$ more relatives compared to the white British subset of UK Biobank samples).
+REGENIE produced significantly inflated test statistics in data sets including high levels of relatedness (t-test $p < 1.5 \times 10^{-4}$, see GB-rel+ in Figure \ref{fig:qd_sim_fpr_qt}), which comprise $1{,}250$ first-degree and $1{,}250$ second-degree relative pairs (corresponding to ${\sim}7.3 \times$ and ${\sim}4.8 \times$ more relatives compared to the white British subset of UK Biobank samples).
 %
 Finally, we observed higher variance for Quickdraws' FPR estimates in simulations involving non-homogeneous ancestry, due to higher noise in the estimated effective sample size, which relies on a smaller number of unrelated homogeneous individuals.
 
@@ -167,7 +167,7 @@ Finally, we observed higher variance for Quickdraws' FPR estimates in simulation
     %
     The line inside each box indicates the median value, the central box indicates the interquartile range, whiskers indicate data up to $1.5$ times the IQR, and outliers are shown as separate points.
     %
-    A description of the group labels (GB-unrel, GB-rel, GB-rel+, EUR) is provided in section \ref{sec:ch5-sim-design}.
+    A description of the group labels (GB-unrel, GB-rel, GB-rel+, EUR) is provided in Section \ref{sec:ch5-sim-design}.
     \label{fig:qd_sim_fpr_qt}
     }
 \end{figure}
@@ -181,9 +181,9 @@ Consistent with this, BOLT-LMM and BOLT-LMM-Inf, which are not designed for the 
 %
 Quickdraws produced controlled false positive rates for both common (MAF $> 1\%$) and rare (MAF $< 1\%$) variants in all the simulation settings we considered, which included population structure, relatedness, and low-prevalence binary traits (see figures \ref{fig:qd_sim_fpr_bt1} and \ref{fig:qd_sim_fpr_bt2} respectively).
 %
-Regenie with Firth logistic regression fallback was inflated for common variants in traits with high prevalence (prevalence $=0.1$ and $0.3$) for several population structure and relatedness settings we considered.
+REGENIE with Firth logistic regression fallback was inflated for common variants in traits with high prevalence (prevalence $=0.1$ and $0.3$) for several population structure and relatedness settings we considered.
 %
-When the prevalence of the trait was set to $0.01$ (i.e., $500$ cases out of $50{,}000$ samples) or below, both Quickdraws and Regenie yielded deflated test statistics (t-test $p < 3 \times 10^{-5}$); in scenarios with such a low prevalence, however, all methods we considered lacked sufficient statistical power to detect association ($\chi^2$ at causal variants ${\approx}1$).
+When the prevalence of the trait was set to $0.01$ (that is, $500$ cases out of $50{,}000$ samples) or below, both Quickdraws and REGENIE yielded deflated test statistics (t-test $p < 3 \times 10^{-5}$); in scenarios with such a low prevalence, however, all methods we considered lacked sufficient statistical power to detect association ($\chi^2$ at causal variants ${\approx}1$).
 %
 SAIGE did not converge for up to $28\%$ of the traits when the prevalence dropped to $0.001$, leading to significant deflation (t-test $p < 10^{-15}$). 
 %
@@ -197,7 +197,7 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
     %
     The line inside each box indicates the median value, the central box indicates the interquartile range, whiskers indicate data up to $1.5$ times the IQR, and outliers are shown as separate points.
     %
-    A description of the group labels (GB-unrel, GB-rel, EUR) is provided in section \ref{sec:ch5-sim-design}.
+    A description of the group labels (GB-unrel, GB-rel, EUR) is provided in Section \ref{sec:ch5-sim-design}.
     \label{fig:qd_sim_fpr_bt1}
     }
 \end{figure}
@@ -211,7 +211,7 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
     %
     The line inside each box indicates the median value, the central box indicates the interquartile range, whiskers indicate data up to $1.5$ times the IQR, and outliers are shown as separate points.
     %
-    A description of the group labels (GB-unrel, GB-rel, EUR) is provided in section \ref{sec:ch5-sim-design}.
+    A description of the group labels (GB-unrel, GB-rel, EUR) is provided in Section \ref{sec:ch5-sim-design}.
     \label{fig:qd_sim_fpr_bt2}
     }
 \end{figure}
@@ -219,7 +219,7 @@ SAIGE did not converge for up to $28\%$ of the traits when the prevalence droppe
 %
 Finally, we verified the calibration of false positive rates in various other simulated conditions, including stronger population structure with up to $30\%$ non-European ancestry (see Figure \ref{fig:sim_calib_pop}), varying levels of relatedness (see Figure \ref{fig:sim_calib_rel}), and genetic architectures involving diverse causal effect size distributions (see Figure \ref{fig:sim_calib_mog}).
 %
-We also evaluated false positive rates in simulations involving all white British individuals (N $\approx 405k$) and all self-identified European individuals from the UK Biobank (N $\approx 460k$), varying levels of polygenicity in quantitative traits ($1\%$ to $10\%$), and varying levels of prevalence ($0.3$ to $0.001$) in binary traits. We found Quickdraws to yield controlled false positive rates across varying significance thresholds, while fastGWA, Regenie, and BOLT-LMM-Inf led to significant inflation in some cases (see figures \ref{fig:sim_400k}, \ref{fig:sim_460k} and tables \ref{tab:fpr_simulations}, \ref{tab:fgwa_fpr_sims}).
+We also evaluated false positive rates in simulations involving all white British individuals (N $\approx 405k$) and all self-identified European individuals from the UK Biobank (N $\approx 460k$), varying levels of polygenicity in quantitative traits ($1\%$ to $10\%$), and varying levels of prevalence ($0.3$ to $0.001$) in binary traits. We found Quickdraws to yield controlled false positive rates across varying significance thresholds, while fastGWA, REGENIE, and BOLT-LMM-Inf led to significant inflation in some cases (see figures \ref{fig:sim_400k}, \ref{fig:sim_460k} and tables \ref{tab:fpr_simulations}, \ref{tab:fgwa_fpr_sims}).
 %
 This is likely the result of residual population stratification, which is not fully corrected using principal components in these simulated scenarios and, if present, may cause subtle inflation in real-data analyses \cite{haworth2019apparent,sohail2019polygenic,berg2019reduced}.
 
@@ -303,7 +303,7 @@ Mean FPR refers to the mean across $50$ independent simulated traits, SE refers 
 \subsection{Statistical power evaluation}
 We now focus on evaluating the statistical power of Quickdraws in these simulations.
 %
-We first tested the performance of Quickdraws in quantitative trait association and compared it with previous association testing methods including BOLT-LMM, Regenie, FastGWA, and an implementation of linear regression provided in Plink \cite{purcell2007plink,chang2015second}.
+We first tested the performance of Quickdraws in quantitative trait association and compared it with previous association testing methods including BOLT-LMM, REGENIE, FastGWA, and an implementation of linear regression provided in Plink \cite{purcell2007plink,chang2015second}.
 %
 For BOLT-LMM, we also considered a faster implementation that uses infinitesimal priors (BOLT-LMM-Inf), which is more scalable but does not lead to higher association power in less polygenic genetic architectures \cite{loh2015efficient,loh2018mixed}.
 %
@@ -311,25 +311,25 @@ We measured statistical power by considering the average $\chi^2$ test statistic
 %
 We normalized the average $\chi^2$ test statistics at causal variants by the average $\chi^2$ test statistics at null variants to remove any residual stratification.
 %
-In these simulations, the modeling of trait polygenicity adopted by Quickdraws led to higher average $\chi^2$ statistics (paired t-test $p < 10^ {-20}$ for polygenicity up to $2\%$) compared to Regenie, FastGWA, BOLT-LMM-Inf, and linear regression (see Figure \ref{fig:sim2_1} and Figure \ref{fig:sim_power_qt} for more simulation conditions).
+In these simulations, the modeling of trait polygenicity adopted by Quickdraws led to higher average $\chi^2$ statistics (paired t-test $p < 10^ {-20}$ for polygenicity up to $2\%$) compared to REGENIE, FastGWA, BOLT-LMM-Inf, and linear regression (see Figure \ref{fig:sim2_1} and Figure \ref{fig:sim_power_qt} for more simulation conditions).
 %
 The difference in association power compared to other infinitesimal methods was larger for traits with lower polygenicity (paired t-test $p < 10^{-53}$ for $5{,}000$ causal variants).
 %
-For instance, when the number of causal variants was reduced to ${5{,}000}$, Quickdraws achieved $\geq 11.46\%$ higher average $\chi^2$ compared to Regenie and BOLT-LMM-Inf (paired t-test $p < 10^{-53}$), resulting in a similarly large gain in effective sample size \cite{yang2011genomic}.
+For instance, when the number of causal variants was reduced to ${5{,}000}$, Quickdraws achieved $\geq 11.46\%$ higher average $\chi^2$ compared to REGENIE and BOLT-LMM-Inf (paired t-test $p < 10^{-53}$), resulting in a similarly large gain in effective sample size \cite{yang2011genomic}.
 %
 
 %
-Next, we applied Quickdraws to the analysis of binary traits, comparing its association power with previous binary trait association methods including SAIGE, Regenie, and FastGWA-GLMM.
+Next, we applied Quickdraws to the analysis of binary traits, comparing its association power with previous binary trait association methods including SAIGE, REGENIE, and FastGWA-GLMM.
 %
-We simulated phenotypes under a liability threshold model, where cases and controls are defined as individuals who are above or below a chosen liability threshold as described in section \ref{sec:ch5-sim-design}.
+We simulated phenotypes under a liability threshold model, where cases and controls are defined as individuals who are above or below a chosen liability threshold as described in Section \ref{sec:ch5-sim-design}.
 %
 We fixed the prevalence at $0.3$ and varied the number of causal variants in the simulation from $1{,}250$ to $10{,}000$ \cite{stahl2012bayesian, zeng2018signatures, o2019extreme}.
 %
-In these experiments, the use of a non-infinitesimal prior in Quickdraws led to higher statistical power compared to SAIGE, Regenie, and FastGWA (paired t-test $p < 10^{-12}$, Figure \ref{fig:sim2_2} and Figure \ref{fig:sim_power_bt} for more simulation conditions).
+In these experiments, the use of a non-infinitesimal prior in Quickdraws led to higher statistical power compared to SAIGE, REGENIE, and FastGWA (paired t-test $p < 10^{-12}$, Figure \ref{fig:sim2_2} and Figure \ref{fig:sim_power_bt} for more simulation conditions).
 %
 The difference in association power compared to other methods was again larger for traits with lower polygenicity (paired t-test $p < 10^{-43}$ for $1{,}250$ and $2{,}500$ causal variants).
 %
-For instance, Quickdraws obtained $11.5\%$ and $12.04\%$ higher average $\chi^2$ compared to Regenie and FastGWA on the simulated causal variants for traits with a low polygenicity of $0.25\%$.
+For instance, Quickdraws obtained $11.5\%$ and $12.04\%$ higher average $\chi^2$ compared to REGENIE and FastGWA on the simulated causal variants for traits with a low polygenicity of $0.25\%$.
 
 \begin{figure}[h!]
     \centering
@@ -347,9 +347,11 @@ For instance, Quickdraws obtained $11.5\%$ and $12.04\%$ higher average $\chi^2$
     % \includegraphics[width=\textwidth]{figures/loya_qd_fig1.pdf}
     \caption{\textbf{Statistical power in simulated quantitative and binary traits for unrelated British samples.}
     %
-    (a) \% increase in average $\chi^2$ test statistics at causal variants w.r.t.\ linear regression (Lin. Reg.) for quantitative traits, varying the number of simulated causal variants from $5{,}000$ to $50{,}000$ variants.
+    (a) \% increase in average $\chi^2$ test statistics at causal variants with respect to\ linear regression (Lin. Reg.) for quantitative traits, varying the number of simulated causal variants from $5{,}000$ to $50{,}000$ variants.
     %
-    (b) \% increase in average $\chi^2$ test-statistics at causal variants w.r.t.\ logistic regression (Log. Reg.) for binary traits, varying the number of simulated causal variants from $1{,}250$ to $10{,}000$ variants.
+    (b) \% increase in average $\chi^2$ test-statistics at causal variants with respect to\ logistic regression (Log. Reg.) for binary traits, varying the number of simulated causal variants from $1{,}250$ to $10{,}000$ variants.
+    %
+    Traits in panel (a) and (b) are simulated for $50{,}000$ samples with $h^2 = 0.4$; the prevalence is fixed to $30$\% for binary traits in panel (b).
     %
     Error bars represent the standard error in the percentage improvement, measured using $50$ independent traits.
     %
@@ -362,9 +364,9 @@ For instance, Quickdraws obtained $11.5\%$ and $12.04\%$ higher average $\chi^2$
 %
 Finally, we tested Quickdraws in simulations where causal effects were not assumed to follow a spike-and-slab distribution, where a subset of variants contributes to the phenotype.
 %
-Instead, we sampled effects from a Gaussian, a mixture of Gaussians, or a Laplace distribution.
+Instead, we sampled effects from a Gaussian, a mixture of Gaussian, or a Laplace distribution.
 %
-In the mixture of Gaussians setting, we again observed that Quickdraws and BOLT-LMM yielded higher power compared to other models.
+In the mixture of Gaussian setting, we again observed that Quickdraws and BOLT-LMM yielded higher power compared to other models.
 %
 In simulations involving fully infinitesimal traits with Laplace and Gaussian effects, Quickdraws and BOLT-LMM produced results similar to other approaches that assume a fully infinitesimal trait architecture (see Figure \ref{fig:sim_power_mog}).
 %
@@ -392,6 +394,8 @@ Quickdraws also yielded controlled FPR in all simulation settings we considered,
     (b) The mean false positive rates (FPR) at 0.005 calculated at null variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits.
     %
     The simulation was performed using the N$=405$k set of white British individuals. The error bars represent 95\% confidence intervals.
+    %
+    The red dashed line corresponds to false positive rate $=0.005$.
     }
     \label{fig:sim_400k}
 \end{figure}
@@ -406,6 +410,8 @@ Quickdraws also yielded controlled FPR in all simulation settings we considered,
     (b) The mean false positive rates (FPR) at 0.005 calculated at null variants across different methods and polygenicities for Quantitative traits, and prevalence for binary traits.
     %
     The simulation was performed using the N$=460$k set of UK Biobank self-identified Europeans \cite{bycroft2018uk}. The error bars represent 95\% confidence intervals.
+    %
+    The red dashed line corresponds to false positive rate $=0.005$.
     }
     \label{fig:sim_460k}
 \end{figure}
@@ -415,11 +421,11 @@ Quickdraws also yielded controlled FPR in all simulation settings we considered,
 \section{UK Biobank analysis}
 \label{sec:ch5-ukb}
 
-We applied Quickdraws to the analysis of $79$ quantitative traits (comprising of blood-related, anthropometric, and other traits) and $50$ self-reported disease traits for ${\sim}405{,}000$ white British individuals from the UK Biobank dataset (see tables \ref{tab:ukb_qt_traits} and \ref{tab:ukb_bt_traits} for the list of traits), which we selected based on their high phenotyping rate and the significance of their estimated heritability as described in section \ref{sec:ch5-data}.
+We applied Quickdraws to the analysis of $79$ quantitative traits (comprising of blood-related, anthropometric, and other traits) and $50$ self-reported disease traits for ${\sim}405{,}000$ white British individuals from the UK Biobank dataset (see tables \ref{tab:ukb_qt_traits} and \ref{tab:ukb_bt_traits} for the list of traits), which we selected based on their high phenotyping rate and the significance of their estimated heritability as described in Section \ref{sec:ch5-data}.
 %
 We applied standard quality-control filtering steps, retaining $458{,}420$ genotyped markers to be used for model-fitting and ${\sim}13.3$ million imputed variants for association testing.
 %
-We compared the test statistics we obtained using Quickdraws to those obtained by other association methods, including SAIGE, FastGWA, Regenie, and BOLT-LMM.
+We compared the test statistics we obtained using Quickdraws to those obtained by other association methods, including SAIGE, FastGWA, REGENIE, and BOLT-LMM.
 %
 
 \subsection{Analysis of false positive rates}
@@ -438,12 +444,12 @@ Quickdraws also remained calibrated in the analysis of low-prevalence binary tra
 \begin{figure}
     \centering
     \includegraphics[width=0.65\linewidth]{figures/qd_ukb/attnratio_plot.pdf}
-    \caption{\textbf{Calibration in real data analysis.} Attenuation ratio of Quickdraws vs. linear regression in unrelated samples; vertical and horizontal lines represent standard error in the attenuation ratio estimate for each method. }
+    \caption{\textbf{Calibration in real data analysis.} Attenuation ratio of Quickdraws (N=$405$k) vs. linear regression in unrelated samples (N=$337$k); vertical and horizontal lines represent mean $\pm$ standard errors in the attenuation ratio estimate for each method.}
     \label{fig:real1c}
 \end{figure}
 
 %
-To further validate signals found using Quickdraws but not found using Regenie, we evaluated the functional annotation of regions where these variants are found.
+To further validate signals found using Quickdraws but not found using REGENIE, we evaluated the functional annotation of regions where these variants are found.
 %
 We used the Baseline-LD model annotations \cite{finucane2015partitioning,gazal2017linkage} to assess the distribution of functional annotations for sets of variants associated using different methods.
 %
@@ -455,11 +461,11 @@ We estimated this ratio by separately summing the numerator and denominator term
 %
 We estimated standard errors around the enrichment by applying the jackknife method to $50$ equally sized genome blocks.
 %
-We looked at functional enrichment for various sets of variants, including (1) variants found in Quickdraws but not in Regenie, (2) variants found in both Quickdraws and Regenie.
+We looked at functional enrichment for various sets of variants, including (1) variants found in Quickdraws but not in REGENIE, (2) variants found in both Quickdraws and REGENIE.
 %
-For (2), we matched the $\chi^2$ distribution of the two considered sets, sampling variants detected using Regenie so that they approximately match the empirical $\chi^2$ distribution of the variants detected using Quickdraws.
+For (2), we matched the $\chi^2$ distribution of the two considered sets, sampling variants detected using REGENIE so that they approximately match the empirical $\chi^2$ distribution of the variants detected using Quickdraws.
 %
-We found similar enrichments compared to variants found using both Regenie and Quickdraws (see figures \ref{fig:functional_qt} and \ref{fig:functional_bt}), suggesting no substantial differences in the functional profile of variants exclusively detected using Quickdraws.
+We found similar enrichments compared to variants found using both REGENIE and Quickdraws (see figures \ref{fig:functional_qt} and \ref{fig:functional_bt}), suggesting no substantial differences in the functional profile of variants exclusively detected using Quickdraws.
 %
 
 \begin{figure}[h!]
@@ -478,7 +484,7 @@ We found similar enrichments compared to variants found using both Regenie and Q
     %
     Functional enrichment profile of variants associated across $79$ quantitative traits.
     %
-    We considered either (a) the set of variants significantly associated ($p \leq 5 \times 10^{-8}$) using both Quickdraws and Regenie, matching the p-value distribution (see Methods), or (b) the set of variants associated using Quickdraws but not Regenie.
+    We considered either (a) the set of variants significantly associated ($p \leq 5 \times 10^{-8}$) using both Quickdraws and REGENIE, matching the p-value distribution (see Methods), or (b) the set of variants associated using Quickdraws but not REGENIE.
     %
     Error bars represent jackknife standard errors; the red dashed line corresponds to no enrichment.
     }
@@ -501,7 +507,7 @@ We found similar enrichments compared to variants found using both Regenie and Q
     %
     Functional enrichment profile of variants associated across $50$ binary traits.
     %
-    We considered either (a) the set of variants significantly associated ($p \leq 5 \times 10^{-8}$) using both Quickdraws and Regenie, matching the p-value distribution (see Methods), or (b) the set of variants associated using Quickdraws but not Regenie.
+    We considered either (a) the set of variants significantly associated ($p \leq 5 \times 10^{-8}$) using both Quickdraws and REGENIE, matching the p-value distribution (see Methods), or (b) the set of variants associated using Quickdraws but not REGENIE.
     %
     Error bars represent jackknife standard errors; the red dashed line corresponds to no enrichment.
     }
@@ -513,29 +519,29 @@ We found similar enrichments compared to variants found using both Regenie and Q
 \subsection{Number of associations}
 We assessed the number of approximately independent associations detected using each method, performing variant clumping with strict filtering criteria (p-value threshold = $5 \times 10^{-9}$, $R^2$ threshold = $0.01$).
 %
-A summary of these results for Quickdraws, Regenie, and FastGWA, the most scalable methods we tested, is shown in Figure \ref{fig:ukb_indep}a; additional data is reported in tables \ref{tab:loci_qt} and \ref{tab:loci_bt}. 
+A summary of these results for Quickdraws, REGENIE, and FastGWA, the most scalable methods we tested, is shown in Figure \ref{fig:ukb_indep}a; additional data is reported in tables \ref{tab:loci_qt} and \ref{tab:loci_bt}. 
 %
-The gains we observed in the number of detected associations were consistent with the increase in power observed in simulations: Quickdraws produced significantly more independent associations compared to Regenie and FastGWA for quantitative and disease traits (binomial test $p < 1.9 \times 10^{-3}$) and a similar number of independent associations compared to BOLT-LMM for quantitative traits (total number of associations, Quickdraws $=26{,}236$, BOLT-LMM $=26{,}368$).
+The gains we observed in the number of detected associations were consistent with the increase in power observed in simulations: Quickdraws produced significantly more independent associations compared to REGENIE and FastGWA for quantitative and disease traits (binomial test $p < 1.9 \times 10^{-3}$) and a similar number of independent associations compared to BOLT-LMM for quantitative traits (total number of associations, Quickdraws $=26{,}236$, BOLT-LMM $=26{,}368$).
 %
-In more detail, for quantitative traits, Quickdraws found $4.97\%$ more independent associations compared to Regenie and $22.71\%$ more compared to FastGWA; for disease traits, Quickdraws found on average $3.25\%$ more independent associations compared to Regenie and $7.07\%$ compared to FastGWA.
+In more detail, for quantitative traits, Quickdraws found $4.97\%$ more independent associations compared to REGENIE and $22.71\%$ more compared to FastGWA; for disease traits, Quickdraws found on average $3.25\%$ more independent associations compared to REGENIE and $7.07\%$ compared to FastGWA.
 %
-The gain was higher in traits with high heritability or low polygenicity such as mean platelet volume ($8.04\%$ increase over Regenie) and standing height ($26.1\%$ increase over Regenie) \cite{zeng2021widespread}.
+The gain was higher in traits with high heritability or low polygenicity such as mean platelet volume ($8.04\%$ increase over REGENIE) and standing height ($26.1\%$ increase over REGENIE) \cite{zeng2021widespread}.
 %
 
 %
 We also analyzed $250$ randomly sampled plasma-protein traits ($N \approx 43$k, see Methods), which have a less polygenic architecture than the other quantitative traits we considered \cite{sun2023plasma}.
 %
-In these analyses, Quickdraws found significantly more independent association signals compared to Regenie (5.54\% more loci, $p = 6.6 \times 10^{-3}$, see Figure \ref{fig:ukb_indep}b).
+In these analyses, Quickdraws found significantly more independent association signals compared to REGENIE (5.54\% more loci, $p = 6.6 \times 10^{-3}$, see Figure \ref{fig:ukb_indep}b).
 %
 Finally, we estimated the effective sample size, calculated as the average $\chi^2 - 1$ association statistic at variants that were found to be significantly associated (p $<5 \times 10^{-8}$) using linear regression model applied to unrelated homogeneous subset of the data \cite{yang2011genomic}.
 %
-We found the effective sample size estimated for Quickdraws to be $14.7\%$ higher ($p = 7.6 \times 10^{-4}$) than FastGWA and $3.4\%$ ($p = 0.197$) higher than Regenie, while being similar to that of BOLT-LMM ($p = 0.46$) when applied to quantitative traits (see Figure \ref{fig:ukb_indep}c-d).
+We found the effective sample size estimated for Quickdraws to be $14.7\%$ higher ($p = 7.6 \times 10^{-4}$) than FastGWA and $3.4\%$ ($p = 0.197$) higher than REGENIE, while being similar to that of BOLT-LMM ($p = 0.46$) when applied to quantitative traits (see Figure \ref{fig:ukb_indep}c-d).
 %
 
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.7]{figures/qd_panel_loci.pdf}
-    \caption{\textbf{Approximately independent loci and effective sample size in UK Biobank analysis.} (a) Number of approximately independent loci after plink clumping in FastGWA (x-axis) vs. Regenie, BOLT-LMM, and Quickdraws for 79 quantitative traits. (b) Number of approximately independent loci after plink clumping in Regenie (x-axis) vs. Quickdraws for 250 randomly sampled plasma protein traits. (c) The $\chi^2$ for 79 quantitative traits and N$=405$k UK Biobank set conditioned on genome-wide significance ($p < 5 \times 10^{-8}$) in linear regression run on unrelated subset of the data (N$=337$k). Median $\chi^2$: FastGWA $= 58.57$, Regenie $= 68.08$, BOLT-LMM $= 70.16$ Quickdraws $= 70.64$. (d) Histogram of the effective-sample size increase compared to FastGWA for 79 quantitative traits, measured as the mean $\chi^2$ minus 1 at genome-wide significant variants inferred though linear regression run on unrelated subset of the data (N$=337$k). For (a-c) The gray line represents the y=x line and the dashed lines represent a linear regression fit for each method, for (d) the dashed line represents the median improvement in effective sample-size across traits.}
+    \caption{\textbf{Approximately independent loci and effective sample size in UK Biobank analysis.} (a) Number of approximately independent loci after plink clumping in FastGWA (x-axis) vs. REGENIE, BOLT-LMM, and Quickdraws for 79 quantitative traits. (b) Number of approximately independent loci after Plink clumping in REGENIE (x-axis) vs. Quickdraws for 250 randomly sampled plasma protein traits. (c) The $\chi^2$ for 79 quantitative traits and N$=405$k UK Biobank set conditioned on genome-wide significance ($p < 5 \times 10^{-8}$) in linear regression run on unrelated subset of the data (N$=337$k). Median $\chi^2$: FastGWA $= 58.57$, REGENIE $= 68.08$, BOLT-LMM $= 70.16$, Quickdraws $= 70.64$. (d) Histogram of the effective-sample size increase compared to FastGWA for 79 quantitative traits, measured as the mean $\chi^2$ minus 1 at genome-wide significant variants inferred though linear regression run on unrelated subset of the data (N$=337$k). For (a-c) The gray line represents the y=x line and the dashed lines represent a linear regression fit for each method, for (d) the dashed line represents the median improvement in effective sample-size across traits. In (c), the slope refers to the linear regression slope of the $\chi^2$ values between each pair of methods.}
     \label{fig:ukb_indep}
 \end{figure}
 
@@ -543,7 +549,7 @@ We found the effective sample size estimated for Quickdraws to be $14.7\%$ highe
 
 \subsection{Replication analysis with Biobank Japan, Finngen and other large-scale GWAS}
 
-To validate the additional associations detected using Quickdraws, we performed a replication analysis using GWAS summary statistics from the Biobank Japan data set \cite{nagai2017overview}, which used BOLT-LMM-Inf and SAIGE to detect associations, FinnGen, \cite{kurki2023finngen} which used Regenie, and other trait-specific large-scale studies \cite{jostins2012host, diabetes2012large, dubois2010multiple, nagel2018meta, de2017genome}
+To validate the additional associations detected using Quickdraws, we performed a replication analysis using GWAS summary statistics from the Biobank Japan data set \cite{nagai2017overview}, which used BOLT-LMM-Inf and SAIGE to detect associations, FinnGen, \cite{kurki2023finngen} which used REGENIE, and other trait-specific large-scale studies \cite{jostins2012host, diabetes2012large, dubois2010multiple, nagel2018meta, de2017genome}
 %
 We assessed the number of variants detected using different GWAS methods that can be replicated in the Biobank Japan, FinnGen and other large-scale studies, using downloaded summary association statistics.
 %
@@ -565,16 +571,16 @@ For the replication of loci, we followed a procedure similar to that adopted in 
 %
 We defined a locus as replicated if any variant in the credible set was also found to be associated (at $P \leq 5 \times 10^{-2}$) with the same direction of effect in the replication cohort.
 %
-First, we calculated the average replication rate for each trait using all GWAS methods (FastGWA, Regenie, and Quickdraws) with a discovery threshold of $5 \times 10^{-9}$.
+First, we calculated the average replication rate for each trait using all GWAS methods (FastGWA, REGENIE, and Quickdraws) with a discovery threshold of $5 \times 10^{-9}$.
 %
 Then, we adjusted the discovery threshold for each method, varying it from $2 \times 10^{-9}$ to $8 \times 10^{-9}$, to achieve the same replication rate for each method.
 
 
-Across the $53$ quantitative and disease traits available in Biobank Japan and Finngen (which comprise $40$ independent traits based on squared phenotypic correlation $\leq 0.1$), Quickdraws yielded a significantly higher number of replicated loci compared to Regenie (binomial test $p=0.014$) and FastGWA (binomial test $p=7 \times 10^{-4}$).
+Across the $53$ quantitative and disease traits available in Biobank Japan and Finngen (which comprise $40$ independent traits based on squared phenotypic correlation $\leq 0.1$), Quickdraws yielded a significantly higher number of replicated loci compared to REGENIE (binomial test $p=0.014$) and FastGWA (binomial test $p=7 \times 10^{-4}$).
 %
-For the set of $30$ quantitative traits present in both studies, we observed a $2.5\%$ and $15.72\%$ increase over Regenie and FastGWA, respectively, and a similar number of replicated loci compared to BOLT-LMM (total number of replicated loci, Quickdraws $=37{,}210$, BOLT-LMM $=37{,}072$).
+For the set of $30$ quantitative traits present in both studies, we observed a $2.5\%$ and $15.72\%$ increase over REGENIE and FastGWA, respectively, and a similar number of replicated loci compared to BOLT-LMM (total number of replicated loci, Quickdraws $=37{,}210$, BOLT-LMM $=37{,}072$).
 %
-For the smaller set of $23$ overlapping disease traits we analyzed, Quickdraws obtained $1.07\%$ and $3.38\%$ more replicated loci compared to Regenie and FastGWA, respectively.
+For the smaller set of $23$ overlapping disease traits we analyzed, Quickdraws obtained $1.07\%$ and $3.38\%$ more replicated loci compared to REGENIE and FastGWA, respectively.
 %
 We observed a similar increase in the number of replicated loci for $5$ disease traits where we had access to meta-analyzed summary statistics from large-scale studies (see Table \ref{tab:repl5}).
 %
@@ -587,7 +593,7 @@ Note that these results may be affected by the choice of GWAS method used in the
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.7]{figures/qd_panel_replication.pdf}
-    \caption{\textbf{Replication analysis in Biobank Japan and Finngen.} (a) The $\chi^2$ in UK Biobank conditioned on genome-wide significance ($p < 5 \times 10^{-8}$) in replicating biobank across GWAS methods. The variants are aggregated across traits, quantitative and binary traits for Regenie and FastGWA, and only quantitative traits for BOLT-LMM. The gray line represents the y=x line, and the dashed line the linear regression fit without intercept. Median $\chi^2$ for quantitative traits: FastGWA $= 28.36$, Regenie $= 33.44$, BOLT-LMM $= 34.47$ Quickdraws $= 36.32$; binary traits: FastGWA $= 14.08$, Regenie $= 14.34$, Quickdraws $= 14.51$. (b-c) Replication venn diagram for (b) 30 overlapping quantitative traits in Biobank Japan and (b) 23 overlapping binary traits in Biobank Japan and Finngen. (d-e) Number of replicated variants vs replication rate for (d) quantitative and (e) binary traits. The discovery threshold was fixed to $5 \times 10^{-9}$ and the replication threshold was varied from $5 \times 10^{-2}$ to $5 \times 10^{-8}$. The error bars represent standard errors calculated using block jack-knife across chromosomes. The dashed line represents a cubic spline fit to the datapoints.}
+    \caption{\textbf{Replication analysis in Biobank Japan and Finngen.} (a) The $\chi^2$ in UK Biobank conditioned on genome-wide significance ($p < 5 \times 10^{-8}$) in replicating biobank across GWAS methods. The variants are aggregated across traits, quantitative and binary traits for REGENIE and FastGWA, and only quantitative traits for BOLT-LMM. The gray line represents the y=x line, and the dashed line the linear regression fit without intercept. Median $\chi^2$ for quantitative traits: FastGWA $= 28.36$, REGENIE $= 33.44$, BOLT-LMM $= 34.47$, Quickdraws $= 36.32$; binary traits: FastGWA $= 14.08$, REGENIE $= 14.34$, Quickdraws $= 14.51$. (b-c) Replication venn diagram for (b) 30 overlapping quantitative traits in Biobank Japan and (b) 23 overlapping binary traits in Biobank Japan and Finngen. (d-e) Number of replicated variants vs replication rate for (d) quantitative and (e) binary traits. The discovery threshold was fixed to $5 \times 10^{-9}$ and the replication threshold was varied from $5 \times 10^{-2}$ to $5 \times 10^{-8}$. The error bars represent standard errors calculated using block jack-knife across chromosomes. The dashed line represents a cubic spline fit to the datapoints. In (a), the slope represents the linear regression slope of the $\chi^2$ values between methods, and in (b-c), the percentages indicate the proportion of associations found with respect to the union of all methods.}
     \label{fig:ukb_repl}
 \end{figure}
 
@@ -596,6 +602,7 @@ Note that these results may be affected by the choice of GWAS method used in the
 \clearpage
 
 \subsection{Predictive power in out-of-sample data}
+\label{sec:ch5-qd-pgs}
 
 To verify that these power gains are due to the modeling of non-infinitesimal trait architectures, we measured the accuracy of the polygenic predictions computed by Quickdraws, BOLT-LMM, and BOLT-LMM-Inf during the model fitting step \cite{loh2015efficient,loh2018mixed}.
 %
@@ -621,13 +628,13 @@ We found Quickdraws' step 1 predictors to be significantly more accurate (paired
 %
 In addition, we compared the accuracy of PGS estimates built based on summary association statistics obtained using different association algorithms.
 %
-Consistent with a recent analysis that did not observe higher accuracy for PGS built from summary statistics derived from non-infinitesimal modeling \cite{weissbrod2022leveraging}, we did not observe significant differences between using Quickdraws, BOLT-LMM, or Regenie, but found PGS built using summary statistics from FastGWA to be significantly less predictive (paired t-test $p < 2.2 \times 10^{-4}$ for both PRS-CS and P+T in European and South-Asian held-out samples, see Figure \ref{fig:ukb_pgs}c-d).
+Consistent with a recent analysis that did not observe higher accuracy for PGS built from summary statistics derived from non-infinitesimal modeling \cite{weissbrod2022leveraging}, we did not observe significant differences between using Quickdraws, BOLT-LMM, or REGENIE, but found PGS built using summary statistics from FastGWA to be significantly less predictive (paired t-test $p < 2.2 \times 10^{-4}$ for both PRS-CS and P+T in European and South-Asian held-out samples, see Figure \ref{fig:ukb_pgs}c-d).
 %
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{figures/qd_panel_pgs.pdf}
-    \caption{\textbf{Phenotype prediction analyses in the UK Biobank.} (a) Held-out mean phenotype prediction $R^2$ comparing step 1 posterior estimates from Quickdraws, BOLT-LMM and BOLT-LMM-Inf. (b) Comparing Quickdraws' step 1 posterior estimates with PGS calculated using Quickdraws' association statistics and P+T (pruning and thresholding as implemented in PRSice) or PRS-CS. (c-d) Comparing predictive power for PGS calculated using association statistics from different GWAS methods and different PGS methods, (c) P+T as implemented in PRSice and (d) PRS-CS. All analyses was performed on $27{,}683$ held-out non-British Europeans, $9{,}044$ self-identified south Asians, $1{,}457$ self identified east Asians and $7{,}204$ self identified African of African American samples. Results are aggregated across the $79$ quantittaive traits we analyzed, and the error bars represent 95\% confidence interval of the mean prediction $R^2$ for each method in each population subgroup.}
+    \caption{\textbf{Phenotype prediction analyses in the UK Biobank.} (a) Held-out mean phenotype prediction $R^2$ comparing step 1 posterior estimates from Quickdraws, BOLT-LMM and BOLT-LMM-Inf. (b) Comparing Quickdraws' step 1 posterior estimates with PGS calculated using Quickdraws' association statistics and P+T (pruning and thresholding as implemented in PRSice) or PRS-CS. (c-d) Comparing predictive power for PGS calculated using association statistics from different GWAS methods and different PGS methods, (c) P+T as implemented in PRSice and (d) PRS-CS. All analyses was performed on $27{,}683$ held-out non-British Europeans, $9{,}044$ self-identified south Asians, $1{,}457$ self identified east Asians and $7{,}204$ self identified African of African American samples. Results are aggregated across the $79$ quantitative traits we analyzed, and the error bars represent 95\% confidence interval of the mean prediction $R^2$ for each method in each population subgroup.}
     \label{fig:ukb_pgs}
 \end{figure}
 
@@ -639,14 +646,14 @@ We briefly experimented with using polygenic scores as covariates when performin
 %
 For this analysis, we focus on chromosomes $1$ to $5$, using up to $405{,}088$ samples from the white British subgroup, and analyzing all $79$ quantitative traits.
 %
-We first generate leave-one-chromosome-out (LOCO) polygenic scores, as described in \cite{bennett2021controlling}, using PRS-CS and summary statistics computed with FastGWA or Regenie.
+We first generate leave-one-chromosome-out (LOCO) polygenic scores, as described in \cite{bennett2021controlling}, using PRS-CS and summary statistics computed with FastGWA or REGENIE.
 %
-We then used FastGWA and Regenie to test for association again, this time including the LOCO PGS corresponding to the chromosome of the variant being tested as a covariate, during both the model-fitting and association steps.
+We then used FastGWA and REGENIE to test for association again, this time including the LOCO PGS corresponding to the chromosome of the variant being tested as a covariate, during both the model-fitting and association steps.
 
 %
 Consistent with recent results \cite{bennett2021controlling, jurgens2023adjusting}, we found that this approach increased the effective sample size for FastGWA, which relies on approximate sparse GRMs.
 %
-While showing no improvement in power for Regenie, which already uses genome-wide regression to account for polygenic effects.
+While showing no improvement in power for REGENIE, which already uses genome-wide regression to account for polygenic effects.
 %
 The effective sample size and total number of genome-wide significant hits, however, remained lower than that achieved using Quickdraws or BOLT-LMM (see Figure \ref{fig:prs_adjustment}).
 %
@@ -658,7 +665,7 @@ The effective sample size and total number of genome-wide significant hits, howe
     % \includegraphics[scale=0.45]{figures/fig.prs_adjustment.summary.mean_loci.eps}
     \caption{\textbf{Effects of PGS-adjustment on association power.}
     %
-    (a) Total number of indepedent loci found on chromosomes 1-5, using different GWAS methods with and without PGS adjustment in $79$ UK Biobank quantitative traits.
+    (a) Total number of independent loci found on chromosomes 1-5, using different GWAS methods with and without PGS adjustment in $79$ UK Biobank quantitative traits.
     %
     (b) Mean $\chi^2$ - 1 at significant variants with and without PGS adjustment for the same traits and regions.
     %
@@ -666,7 +673,7 @@ The effective sample size and total number of genome-wide significant hits, howe
     %
     FastGWA with PGS adjustment yielded an increase in the number of independent loci (with PGS adjustment, $159.1$; without, $141.6$; paired $t$-test $p=1.9\times 10^{-9}$) and higher mean $\chi^2$-1 at significant variants (with PGS adjustment, $96.0$; without, $89.8$; $p=3.3\times 10^{-11}$).
     %
-    Regenie with PGS adjustment yielded fewer independent loci (with PGS adjustment, $144.1$; without, $150.1$; $p=7.4\times 10^{-6}$), and similar mean $\chi^2$ - 1 values (with PGS adjustment, $124.6$; without, $124.1$; $p>0.05$).
+    REGENIE with PGS adjustment yielded fewer independent loci (with PGS adjustment, $144.1$; without, $150.1$; $p=7.4\times 10^{-6}$), and similar mean $\chi^2$ - 1 values (with PGS adjustment, $124.6$; without, $124.1$; $p>0.05$).
     }
     \label{fig:prs_adjustment}
 \end{figure}
@@ -696,11 +703,11 @@ We used the LASSO regression model provided in \cite{schoeler2023participation} 
 \section{Cost analysis on UK Biobank RAP}
 \label{sec:ch5-cost}
 
-We compared the computational efficiency of Quickdraws in large-scale UK Biobank analyses to that of Regenie, FastGWA, SAIGE, and BOLT-LMM, testing the speed and cost of running each method on the UK Biobank's RAP cloud platform.
+We compared the computational efficiency of Quickdraws in large-scale UK Biobank analyses to that of REGENIE, FastGWA, SAIGE, and BOLT-LMM, testing the speed and cost of running each method on the UK Biobank's RAP cloud platform.
 %
 We tested ${\sim}13.3$ million imputed genotypes for association with the $50$ quantitative and $50$ binary traits varying the number of samples between $N=50{,}000$, $N=405{,}088$ and artificially simulated $N=1{,}000k$.
 %
-We used $458{,}464$ markers for model fitting for Quickdraws, Regenie, and BOLT-LMM and an LD-pruned set of $89{,}177$ markers for SAIGE, and used pre-computed sparse GRM matrices for FastGWA and SAIGE.
+We used $458{,}464$ markers for model fitting for Quickdraws, REGENIE, and BOLT-LMM and an LD-pruned set of $89{,}177$ markers for SAIGE, and used precomputed sparse GRM matrices for FastGWA and SAIGE.
 %
 Unlike current approaches, Quickdraws allows leveraging GPU hardware to speed up the Bayesian regression in the model fitting step.
 %
@@ -715,13 +722,13 @@ Additionally, we use \texttt{mem2\_ssd2\_gpu1\_x8} to run step 1 of Quickdraws o
 %
 All the jobs on RAP were run using ``on-demand'' priority.
 %
-Each method was run using configurations that would optimize performance, where possible, e.g., by allowing multi-threading and supplying files using the most efficient file formats, and all methods were given the same file containing testing variants as input.
+Each method was run using configurations that would optimize performance, where possible, example, by allowing multi-threading and supplying files using the most efficient file formats, and all methods were given the same file containing testing variants as input.
 
 BOLT-LMM, FastGWA and SAIGE do not leverage multi-trait parallelization, so we run them for $5$ phenotypes and extrapolate the results for $50$ phenotypes.
 %
 We also only run BOLT-LMM for one of the three RAP instances, as the large difference in running costs would not to be significantly reduced using other types of hardware.
 %
-For binary traits and $N = 1{,}000k$, which are more computationally intensive, we run step 2 for Quickdraws, Regenie, and SAIGE using a subset of ${\sim}13.3$ million testing variants, and linearly extrapolate the results.
+For binary traits and $N = 1{,}000k$, which are more computationally intensive, we run step 2 for Quickdraws, REGENIE, and SAIGE using a subset of ${\sim}13.3$ million testing variants, and linearly extrapolate the results.
 
 %
 Additionally, Quickdraws allows running the model-fitting step in either high-memory or low-memory mode.
@@ -746,14 +753,14 @@ For the analysis in table \ref{tab:speed}, we report the minimal cost across the
             % & Quickdraws (A100) & 1.3 & 10.3 & 11.6 & 48 (16) & -\\
             & Quickdraws & 9.6 & 9 & 18.6 & 48 (16) & 7.9\\
             & BOLT-LMM & 127 & 671.5 & 798.5 & $<$15 & 158.4\\
-            & Regenie & 1.1 & 19.4 & 20.5 & $<$15 & 4.0\\
+            & REGENIE & 1.1 & 19.4 & 20.5 & $<$15 & 4.0\\
             & FastGWA & - & 20.2 & 20.2 & $<$15 & 3.6\\
         \hline    
         \multirow{1}{*}{405k}
             % & Quickdraws (A100) & 10.6 & 39.3 & 49.9 & 63 (16) & -\\
             & Quickdraws & 97.7 & 51.5 & 149.3 & 63 (16) & 93.0 \\
             & BOLT-LMM & 1,150 & 7,250 & 8,400 & 46 & 7500.0\\
-            & Regenie & 4.7 & 45.3 & 50.0 & $<$15 & 24.2\\
+            & REGENIE & 4.7 & 45.3 & 50.0 & $<$15 & 24.2\\
             & FastGWA & - & 128.4 & 128.4 & $<$15 & 37.3\\
         \hline
     \end{tabular}
@@ -774,14 +781,14 @@ For the analysis in table \ref{tab:speed}, we report the minimal cost across the
             % & Quickdraws (A100) & 1.3 & 10.3 & 11.6 & 48 (16) & -\\
             & Quickdraws & 18.3 & 77.8 & 96.1 & 49 (16) & 25.2 \\
             & SAIGE  & 2.1 & 270.9  & 273 & $<$15 & 47.5 \\
-            & Regenie  & 13.1 & 168.9 & 182.0 & $<$15 & 41.0 \\
+            & REGENIE  & 13.1 & 168.9 & 182.0 & $<$15 & 41.0 \\
             & FastGWA  & - & 40.6 & 40.6 & $<$15 & 9.2 \\
         \hline    
         \multirow{1}{*}{405k}
             % & Quickdraws (A100) & 10.6 & 39.3 & 49.9 & 63 (16) & -\\
             & Quickdraws  & 162.7 & 519.7 & 682.3 & 67 (16) & 395.9 \\
             & SAIGE  & 9.0 & 12015.5 & 12024.4 & $<$15 & 2834.9 \\
-            & Regenie  & 56 & 813.9 & 869.9 & $<$15 & 506.9 \\
+            & REGENIE  & 56 & 813.9 & 869.9 & $<$15 & 506.9 \\
             & FastGWA  & - & 254.1 & 254.1 & $<$15 & 98.1 \\
         \hline
     \end{tabular}
@@ -813,7 +820,7 @@ Summary statistics for the traits we analyzed, which comprise $79$ quantitative 
 %%%%%%%%%%%%%%%%%%% Third paragraph %%%%%%%%%%%
 The gains in statistical power achieved by Quickdraws are equivalent to analyzing data sets that contain larger sample sizes \cite{yang2011genomic,loh2015efficient,loh2018mixed}, with our simulations showing increases in effective sample size of over $19.2\%$ for traits linked to a few thousands of causal variants.
 %
-Similarly, our analyses of real traits, in which we focused on quantitative traits and diseases with high heritability and phenotyping rate, yielded more independent association signals than current scalable approaches (e.g., $26.1\%$ and $8.04\%$ increase over Regenie for Height and Mean platelet volume, see tables \ref{tab:loci_qt} and \ref{tab:loci_bt}).
+Similarly, our analyses of real traits, in which we focused on quantitative traits and diseases with high heritability and phenotyping rate, yielded more independent association signals than current scalable approaches (example, $26.1\%$ and $8.04\%$ increase over REGENIE for Height and Mean platelet volume, see tables \ref{tab:loci_qt} and \ref{tab:loci_bt}).
 %
 Although complex traits are known to be highly polygenic \cite{yengo2022saturated}, their genetic architectures, in particular for molecular traits such as metabolites \cite{kettunen2012genome}, are estimated to be far from a purely infinitesimal model, with large fractions of heritability concentrating in a relatively small set of variants \cite{stahl2012bayesian,zeng2018signatures,weissbrod2020functionally}.
 %
@@ -856,7 +863,7 @@ Third, although we have shown that a strategy based on adjusting for polygenic s
 %
 Fourth, association analyses have recently been shown to be affected by participation biases \cite{pirastu2021genetic, benonisdottir2023studying}, to which Quickdraws is also susceptible.
 %
-To mitigate these biases, we implemented the adjustment strategy proposed in \cite{schoeler2023participation} in step 2 of the Quickdraws algorithm (as described in section \ref{sec:ch5-ukb-parti-bias}).
+To mitigate these biases, we implemented the adjustment strategy proposed in \cite{schoeler2023participation} in step 2 of the Quickdraws algorithm (as described in Section \ref{sec:ch5-ukb-parti-bias}).
 %
 However, further work will be needed to incorporate this adjustment in step 1 of the algorithm.
 %

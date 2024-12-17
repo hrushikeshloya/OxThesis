@@ -3,7 +3,7 @@
 \minitoc
 
 \section{Chapter overview}
-In this chapter, we introduce a novel method called Quickdraws, which we developed to perform scalable and statistically powerful genome-wide association studies. Quickdraws leverages advancements in machine learning and the processing power of modern computing architectures, such as graphical processing units (GPUs), to conduct genome-wide association studies on a large scale. We begin by presenting the theoretical framework for Quickdraws in section \ref{sec:ch4-theory}, which incorporates modern variational inference techniques, including stochastic variational inference. After establishing the theoretical foundation, we will delve into the algorithm's details in section \ref{sec:ch4-method}, covering several steps such as heritability estimation, Bayesian regression, and the estimation and calibration of test statistics. Finally we summarize the key steps in the algorithm in section \ref{sec:ch4-summary}.
+In this chapter, we introduce a novel method called Quickdraws, which we developed to perform scalable and statistically powerful genome-wide association studies. Quickdraws leverages advancements in machine learning and the processing power of modern computing architectures, such as graphical processing units (GPUs), to conduct genome-wide association studies on a large scale. We begin by presenting the theoretical framework for Quickdraws in Section \ref{sec:ch4-theory}, which incorporates modern variational inference techniques, including stochastic variational inference. After establishing the theoretical foundation, we will delve into the algorithm's details in Section \ref{sec:ch4-method}, covering several steps such as heritability estimation, Bayesian regression, and the estimation and calibration of test statistics. Finally we summarize the key steps in the algorithm in Section \ref{sec:ch4-summary}.
 
 \begin{figure}[h!]
     \centering
@@ -113,7 +113,7 @@ This enables the use of coordinate-ascent variational inference algorithms and m
 %
 
 %
-Using this approach, the model we adopt when estimating genetic effects in quantitative traits, i.e., a Bayesian linear regression with spike-and-slab prior and a fully-factorized spike-and-slab approximate posterior, takes the form
+Using this approach, the model we adopt when estimating genetic effects in quantitative traits, that is, a Bayesian linear regression with spike-and-slab prior and a fully-factorized spike-and-slab approximate posterior, takes the form
 \begin{align}
     &\text{\textbf{Likelihood:} } &P(y \mid X, \beta) \sim \mathcal{N}(\beta^T X, \sigma_e^2) \nonumber \\
     &\text{\textbf{Prior:} } &P(\beta) = \prod_j P(\beta_j), \hspace{1mm} P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0) \nonumber \\
@@ -143,11 +143,11 @@ The optimal update for a variational parameter is proportional to the exponentia
 It can be shown that the above updates increase the ELBO each iteration (see \cite{blei2017variational} for a concise proof).
 %
 We next derive the CAVI update equations for the Bayesian linear regression model described in Equation \ref{spike-and-slab-model}.
-%
+% %
 
-\newpage
+% \newpage
 
-%
+% %
 \noindent \textbf{Derivation of CAVI updates for spike-and-slab Bayesian linear regression:}
 
 \begin{align}
@@ -155,13 +155,10 @@ We next derive the CAVI update equations for the Bayesian linear regression mode
     &= E_{\beta_{(-j)}} \log P(y \mid \beta) + E_{\beta_{(-j)}} \log P(\beta_j) + C \nonumber \\
     &= \sum_{n=1}^N \left( E_{\beta_{(-j)}} \log P(y_n \mid \beta) \right) + E_{\beta_{(-j)}} \log P(\beta_j) + C \label{cavi-1}.
 \end{align}
-
 %
-To show this, we will ignore the terms in the complete conditional that do not depend on $\beta_j$ and simplify the complete conditional for $N$ data points.
+% We will ignore the terms in the complete conditional that do not depend on $\beta_j$ and simplify the complete conditional for $N$ data points.
 %
-We will also remove terms which do not depend on $\beta_j$ and absorb them in the constant $C$; the constant is thus not necessarily the same from one step to the other, but we simplify the notation by always expressing it as $C$.
-%
-
+We will remove terms which do not depend on $\beta_j$ and absorb them in the constant $C$; the constant is thus not necessarily the same from one step to the other, but we simplify the notation by always expressing it as $C$.
 %
 We start by simplifying the equation by substituting the normal log-likelihood and spike-and-slab prior,
 \begin{equation}
@@ -175,30 +172,27 @@ The natural parameters for the spike-and-slab distribution $(1-p_0) \mathcal{N}(
 %
 We can substitute the natural parameters for the prior to simplify further:
 
+\begingroup
+\scriptsize
 \begin{align}
     &\log q(\beta^{*}_j) = \nonumber \\
     &= \sum_{n=1}^N E_{\beta_{(-j)}} \left( - \frac{(y_n - \beta^T x_n)^2}{2 \sigma_e^2} \right) + E_{\beta_{(-j)}} \bigg( - \mathbb{I}\left\{\beta_j \ne 0\right\} \frac{\beta_j^2}{2\sigma^2} \nonumber \\
     &\quad - \mathbb{I}\left\{\beta_j = 0\right\} \left(\log p_0 - \log (1-p_0) + \log(\sigma) \right)\bigg) + C \nonumber \\
-    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (y_n - \beta_j x_{n,j} - \sum_{i \ne j} \beta_i x_{n,i})^2}{2 \sigma_e^2} \right)  - \mathbb{I}\left\{\beta_j \ne 0\right\} \frac{\beta_j^2}{2\sigma^2} \nonumber \\
-    &\quad - \mathbb{I}\left\{\beta_j = 0\right\} \left(\log \frac{p_0 \sigma}{1-p_0} \right) + C \nonumber \\
-    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (\beta_j x_{n,j} - (y_n - \sum_{i \ne j} \beta_i x_{n,i}))^2}{2 \sigma_e^2} \right)  - \mathbb{I}\left\{\beta_j \ne 0\right\} \frac{\beta_j^2}{2\sigma^2} \nonumber \\
-    &\quad - \mathbb{I}\left\{\beta_j = 0\right\} \left(\log \frac{p_0 \sigma}{1-p_0} \right) + C \nonumber \\
-    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (\beta^2_j x^2_{n,j} - 2(y_n - \sum_{i \ne j} \beta_i x_{n,i})\beta_j x_{n,j})}{2 \sigma_e^2} + \frac{\beta_j^2}{2\sigma^2} \right) \mathbb{I}\left\{\beta_j \ne 0\right\} \nonumber \\
-    &\quad - \left(\log \frac{p_0 \sigma}{1-p_0} \right)\mathbb{I}\left\{\beta_j = 0\right\} + C \nonumber \\
+    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (y_n - \beta_j x_{n,j} - \sum_{i \ne j} \beta_i x_{n,i})^2}{2 \sigma_e^2} \right)  - \mathbb{I}\left\{\beta_j \ne 0\right\} \frac{\beta_j^2}{2\sigma^2} - \mathbb{I}\left\{\beta_j = 0\right\} \left(\log \frac{p_0 \sigma}{1-p_0} \right) + C \nonumber \\
+    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (\beta_j x_{n,j} - (y_n - \sum_{i \ne j} \beta_i x_{n,i}))^2}{2 \sigma_e^2} \right)  - \mathbb{I}\left\{\beta_j \ne 0\right\} \frac{\beta_j^2}{2\sigma^2} - \mathbb{I}\left\{\beta_j = 0\right\} \left(\log \frac{p_0 \sigma}{1-p_0} \right) + C \nonumber \\
+    &= - E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (\beta^2_j x^2_{n,j} - 2(y_n - \sum_{i \ne j} \beta_i x_{n,i})\beta_j x_{n,j})}{2 \sigma_e^2} + \frac{\beta_j^2}{2\sigma^2} \right) \mathbb{I}\left\{\beta_j \ne 0\right\} - \left(\log \frac{p_0 \sigma}{1-p_0} \right)\mathbb{I}\left\{\beta_j = 0\right\} + C \nonumber \\
     &= - \left( \frac{\sum_{n=1}^N x^2_{n,j}}{2 \sigma_e^2} + \frac{1}{2\sigma^2} \right)\mathbb{I}\left\{\beta_j \ne 0\right\}\beta_j^2  - \left(\log \frac{p_0 \sigma}{1-p_0} \right)\mathbb{I}\left\{\beta_j = 0\right\} \nonumber \\
     &\quad + E_{\beta_{(-j)}} \left( \frac{\sum_{n=1}^N (y_n - \sum_{i \ne j} \beta_i x_{n,i}) x_{n,j}}{\sigma_e^2} \right)\mathbb{I}\left\{\beta_j \ne 0\right\}\beta_j  + C
 \end{align}
+\endgroup
 
-%
 Substituting the expected value of the approximate spike-and-slab posterior $(1-\psi_i)\mathcal{N}(\mu_i, \sigma_i) + \psi_i \delta(0)$ with $(1-\psi_i)\mu_i$,
-
 \begin{align}
    \log q(\beta^{*}{_j}) &=  {\color{red}{- \left( \frac{\sum_{n=1}^N x^2_{n,j}}{2 \sigma_e^2} + \frac{1}{2\sigma^2} \right)}}\mathbb{I}\left\{\beta_j \ne 0\right\}\beta_j^2 \nonumber +\\ & \hspace{4mm} {\color{blue}{+ \left( \frac{\sum_{n=1}^N (y_n - \sum_{i \ne j} \mu_i (1- \psi_i) x_{n,i}) x_{n,j})}{ \sigma_e^2} \right)}}\mathbb{I}\left\{\beta_j \ne 0\right\}\beta_j \nonumber +\\ & \hspace{4mm} {\color{green}{- \left(\log \frac{p_0 \sigma}{1-p_0} \right)}}\mathbb{I}\left\{\beta_j = 0\right\} + C.
 \end{align}
 
 %
 Now comparing the coefficients of the sufficient statistics $\mathbb{I}\left\{\beta_j \ne 0\right\} \beta_j^2$, $\mathbb{I}\left\{\beta_j \ne 0\right\} \beta_j$ and $\mathbb{I}\left\{\beta_j = 0\right\}$ to the natural parameters of the spike-and-slab $-\frac{1}{2\sigma_j^2}$, $\frac{\mu_j}{\sigma_j^2}$ and $\log \psi_j - \log (1-\psi_j) + \frac{\mu_j^2}{2\sigma_j^2} + \frac{1}{2}\log \sigma_j^2$, respectively \cite{spence2020flexible}, we get the following update rules:
-
 \begin{align}
     \sigma_j^2 &= \frac{1}{\frac{\sum_{n=1}^N x^2_{n,j}}{ \sigma_e^2} + \frac{1}{\sigma^2}} \nonumber \\
     \mu_j &= \frac{\sum_{n=1}^N (y_n - \sum_{i \ne j} \mu_i (1- \psi_i) x_{n,i}) x_{n,j})}{\sum_{n=1}^N x^2_{n,j} + \frac{\sigma_e^2}{\sigma^2}} \nonumber \\
@@ -223,10 +217,8 @@ Overall, stochastic variational inference provides a more efficient and scalable
 %
 We now derive the stochastic variational inference objective for the Bayesian linear regression model described in Equation \ref{spike-and-slab-model} and a similar Bayesian logistic regression model.
 %
-In later section \ref{sec:ch4-blr}, we highlight several practical considerations linked to implementing the algorithm.
+In later Section \ref{sec:ch4-blr}, we highlight several practical considerations linked to implementing the algorithm.
 %
-
-\newpage
 
 \noindent \textbf{Derivation of Stochastic VI objective for spike-and-slab Bayesian linear regression:}
 %
@@ -250,7 +242,7 @@ We derive the KL divergence between two spike-and-slab distributions as a specia
 %
 We do not have a closed form for the log-likelihood term.
 %
-The usual approach in stochastic variational inference is to replace the integral with an approximate monte-carlo estimate.
+The usual approach in stochastic variational inference is to replace the integral with an approximate Monte Carlo estimate.
 %
 This results in a noisy yet unbiased estimate of the ELBO, which can be shown to converge to a local minimum under the Robbins-Munro condition \cite{robbins1951stochastic} on step-size:
 \begin{align}
@@ -259,7 +251,7 @@ This results in a noisy yet unbiased estimate of the ELBO, which can be shown to
 \end{align}
 
 %
-We take $S$ monte-carlo samples from the approximate posterior $\beta(s)$ to calculate the approximate log-likelihood.
+We take $S$ Monte Carlo samples from the approximate posterior $\beta(s)$ to calculate the approximate log-likelihood.
 %
 Similar to the use of stochastic optimization in machine learning, we can also have a batched version of the above ELBO, where we update the variational parameters after each mini-batch of data.
 %
@@ -290,11 +282,12 @@ The model for Bayesian logistic regression with spike-and-slab prior can be writ
     \label{spike-and-slab-model3-rep}
 \end{align}
 
-Similar to the linear model in equation \ref{spike-and-slab-model}, $X_n$ and $y_n$ represent the input vector and output values for the $n$-th datapoint.
+Similar to the linear model in Equation \ref{spike-and-slab-model}, $X_n$ and $y_n$ represent the input vector and output values for the $n$-th datapoint.
 %
 We still assume a spike-and-slab approximate posterior, although it is not conjugate to the logistic regression model, because we empirically find it to still perform well in this case.
 %
 The ELBO for Bayesian logistic regression can be simplified as in the linear case:
+
 \begin{small}
 \begin{align}
  &L^{Bi}_{VI}(\psi, \mu, \sigma) = \sum\limits^{N}_{n=1} E[log(p(y_{n} \mid \beta))] - KL(q_{\psi, \mu, \sigma}(\beta) \mid P(\beta)) \nonumber \\
@@ -302,7 +295,7 @@ The ELBO for Bayesian logistic regression can be simplified as in the linear cas
 \label{spike-and-slab-2}
 \end{align}
 \end{small}
-where $c_n = \sigma(\beta^T X_n)$, i.e., the output after sigmoid activation.
+where $c_n = \sigma(\beta^T X_n)$, that is, the output after sigmoid activation.
 %
 We estimate the expected log-likelihood with a Monte Carlo estimate, whereas we write a closed-form solution for the KL divergence term similar to Equation \ref{elbo-loss}.
 %
@@ -318,7 +311,7 @@ where we take $S$ Monte Carlo samples to approximate the log-likelihood term.
 \section{Method description}
 \label{sec:ch4-method}
 \subsection{Overview of the method}
-Quickdraws is a mixed-model association algorithm that models phenotypes as a combination of fixed effects, random genetic effects, and random environmental effects (see section \ref{sec:ch1-lmm} for introduction to mixed models).
+Quickdraws is a mixed-model association algorithm that models phenotypes as a combination of fixed effects, random genetic effects, and random environmental effects (see Section \ref{sec:ch1-lmm} for introduction to mixed models).
 %
 Like all modern GWAS algorithms \cite{loh2015efficient,loh2018mixed,zhou2018efficiently,jiang2019resource,jiang2021generalized,mbatchou2021computationally}, Quickdraws detects association using a two-step approach.
 %
@@ -338,12 +331,21 @@ Similarly to BOLT-LMM, which uses a mixture-of-Gaussians prior on variant effect
 %
 It does so by adopting a spike-and-slab prior on variant effects.
 %
-Other scalable methods, such as Regenie and FastGWA, on the other hand, rely on Gaussian priors that are more computationally tractable but assume fully polygenic traits.
+Other scalable methods, such as REGENIE and FastGWA, on the other hand, rely on Gaussian priors that are more computationally tractable but assume fully polygenic traits.
 %
-Unlike BOLT-LMM, however, which requires $\mathcal{O}(N^{1.5})$ computation for an analyses involving $N$ individuals, Quickdraws performs model fitting in time that scales only linearly in sample size.
+
+
+Quickdraws incorporates several technical advancements to achieve scalability while maintaining high power.
 %
-This is achieved through the use of stochastic variational inference \cite{hoffman2013stochastic}, GPU-based hardware acceleration, and other algorithmic techniques that are described in more detail in the later section \ref{sec:ch4-blr}.
+First, Quickdraws uses stochastic variational inference \cite{graves2011practical,hoffman2013stochastic}, optimized with first-order optimizers \cite{robbins1951stochastic,kingma2014adam}, to enable linear scaling with sample size, whereas BOLT-LMM requires $\mathcal{O}(N^{1.5})$ computation for $N$ individuals.
 %
+Second, gradient-based stochastic variational inference allows Quickdraws to leverage modern computing architectures, such as GPUs.
+%
+By offloading matrix multiplications and gradient evaluations to GPUs, Quickdraws achieves significant speedups over CPU-based computation.
+%
+Finally, Quickdraws accelerates convergence by initializing leave-one-chromosome-out (LOCO) runs with effect estimates from the whole-genome model, reducing computation without compromising accuracy \cite{pan2009survey}.
+%
+Further details on Bayesian regression and its computational optimizations are provided in the later Section \ref{sec:ch4-blr}.
 
 %
 During the testing step, Quickdraws uses these estimated genetic effects to compute a score-based test statistic for a linear or logistic mixed model, which is approximated up to a constant of proportionality \cite{svishcheva2012rapid, jakobsdottir2013mastor, loh2015efficient}.
@@ -375,30 +377,30 @@ We optimize the posterior using stochastic variational inference \cite{hoffman20
 
 \subsubsection{Quantitative traits}
 
-Quickdraws adopts a Bayesian linear regression model as discussed in section \ref{sec:ch4-theory-mfvi}:
+Quickdraws adopts a Bayesian linear regression model as discussed in Section \ref{sec:ch4-theory-mfvi}:
 \begin{align}
     &\text{\textbf{Likelihood:} } &P(y \mid X, \beta) \sim \mathcal{N}(\beta^T X, \sigma_e^2) \nonumber \\
     &\text{\textbf{Prior:} } &P(\beta) = \prod_j P(\beta_j), \hspace{1mm} P(\beta_j) \sim (1-p_0)\mathcal{N} (0, \sigma ^ 2) + p_0 \delta(0) \nonumber \\
     &\text{\textbf{Approximate Posterior:} } &q(\beta) = \prod_j q(\beta_j), \hspace{1mm} q(\beta_j) \sim (1-\psi_j)\mathcal{N}(\mu_j, \sigma^2_j) + \psi_j \delta(0) \label{spike-and-slab-model2}
 \end{align}
 
-Similar to equation \ref{spike-and-slab-model}, given $N$ individuals and $M$ variants, $X$ is an $N \times M$ covariate-adjusted genotype matrix, $y$ is a $N \times 1$ covariate-adjusted phenotype vector, and $\beta$ is a $M \times 1$ vector of variant effects.
+Similar to Equation \ref{spike-and-slab-model}, given $N$ individuals and $M$ variants, $X$ is an $N \times M$ covariate-adjusted genotype matrix, $y$ is a $N \times 1$ covariate-adjusted phenotype vector, and $\beta$ is a $M \times 1$ vector of variant effects.
 %
 $\delta(0)$ is the Dirac delta function at 0, representing the spike in the spike-and-slab prior used to model the sparsity in the genetic architecture.
 %
 $\sigma_e^2$ and $\sigma^2$ are the variance component corresponding to environment and per predictor effect, $p_0$ is the sparsity and $j$ indexes over all model SNPs.
 %
-As we discussed in section \ref{sec:ch4-theory-mfvi}, we also assume a fully-factorized spike-and-slab approximate posterior, which leads to efficient and low-variance sampling from the posterior.
+As we discussed in Section \ref{sec:ch4-theory-mfvi}, we also assume a fully-factorized spike-and-slab approximate posterior, which leads to efficient and low-variance sampling from the posterior.
 %
 And, we use stochastic variational inference to directly optimize the evidence lower bound (ELBO).
 %
-The ELBO for Bayesian linear regression with spike-and-slab prior, normal likelihood, and spike-and-slab approximate posterior (derived in section \ref{sec:ch4-theory-svi}) can be approximated as follows: 
+The ELBO for Bayesian linear regression with spike-and-slab prior, normal likelihood, and spike-and-slab approximate posterior (derived in Section \ref{sec:ch4-theory-svi}) can be approximated as follows: 
 \begin{align}
     L^{Q}_{VI}&(\psi, \mu, \sigma) \approx - \sum\limits^{B}_{b=1} \Bigg( \sum\limits^{S}_{s=1} \frac{(y_b - \beta(s) X_b)^2}{2 \sigma_e^2} \ + \nonumber \\
     &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg) \label{elbo-loss-ss}
 \end{align}
 
-In this expression, $L^{Q}_{VI}(\psi, \mu, \sigma)$ is the variational inference objective to be maximized, $\psi, \mu, \sigma$ are the variational parameters to be optimized, $X_b$ and $y_b$ are a genotype matrix and a phenotype vector containing the $b^{th}$ (out of $B$) batch of the data, batched along the number of samples, while $\beta(s)$ are the effect estimates sampled from the approximate posterior $q(\beta)$.
+In this expression, $L^{Q}_{VI}(\psi, \mu, \sigma)$ is the variational inference objective to be maximized, $\psi, \mu, \sigma$ are the variational parameters to be optimized, $X_b$ and $y_b$ are a genotype matrix and a phenotype vector containing the $b$-th (out of $B$) batch of the data, batched along the number of samples, while $\beta(s)$ are the effect estimates sampled from the approximate posterior $q(\beta)$.
 %
 Note that, contrary to other variational inference schemes, we aim to optimize a stochastic objective, since $\beta(s)$ is randomly sampled.
 %
@@ -412,7 +414,7 @@ For binary traits, we adopt a Bayesian logistic regression model, so that the li
 \end{align}
 while the prior and approximate posterior are unchanged.
 %
-In the above, $X_n$ and $y_n$ represent the covariate-adjusted genotype vector and phenotype values for the $n^{th}$ individual, $\sigma$ is the sigmoid function, which maps the output of the regression to a value between $0$ and $1$, and all other quantities are as previously defined.
+In the above, $X_n$ and $y_n$ represent the covariate-adjusted genotype vector and phenotype values for the $n$-th individual, $\sigma$ is the sigmoid function, which maps the output of the regression to a value between $0$ and $1$, and all other quantities are as previously defined.
 %
 We also assume that the approximate posterior has a spike-and-slab distribution; although it is not conjugate to the logistic distribution, we observed it to provide a good approximation to the true posterior.
 %
@@ -422,7 +424,7 @@ The ELBO, which we again optimize using stochastic variational inference, now ta
     &+ \frac{1}{B}\sum\limits^{M}_{j=1} \left(  \frac{\psi_j}{2}\left(-1 + \frac{\mu_j^2 + \sigma_j^2}{\sigma^2} - \log \frac{\sigma_j^2}{\sigma^2} \right) + (1-\psi_j)\log\frac{1 - \psi_j}{1 - p_0} + \psi_j\log\frac{\psi_j}{p_0} \right) \Bigg)
 \end{align}
 
-where all terms are defined as in Equation \ref{elbo-loss-ss} and derivation is provided in section \ref{sec:ch4-theory-svi}.
+where all terms are defined as in Equation \ref{elbo-loss-ss} and derivation is provided in Section \ref{sec:ch4-theory-svi}.
 
 \subsubsection{Practical considerations}
 Stochastic VI methods provide a principled and efficient way to perform variational inference.
@@ -560,7 +562,7 @@ where $y$ is a $N \times 1$ vector of phenotype values, $x_{test}$ is a $N \time
 %
 Note that using a covariate-adjusted genotype and phenotype by first regressing out any covariates is equivalent to including covariates as fixed effects in the above equation.
 %
-Based on this model, we aim to compute the following $\chi^2$ association statistic (a derivation is provided in section \ref{sec:ch1-lmm}): 
+Based on this model, we aim to compute the following $\chi^2$ association statistic (a derivation is provided in Section \ref{sec:ch1-lmm}): 
 \begin{equation}
    \frac{(x_{test}^T \hat{V}^{-1} y)^2}{x_{test}^T \hat{V}^{-1} x_{test}} \sim \chi^2_1, \label{lmm-chi2}
 \end{equation}
@@ -593,7 +595,7 @@ For binary traits, we model the association between genotype and phenotype using
 \begin{equation}
     logit(p_i) = \alpha C + x_{test}\beta_{test} + g + \epsilon, \label{eq:log_lmm}
 \end{equation}
-where $p_i = P(y_i = 1 \mid x_{test}, g, C)$ is the probability of $i^{th}$ individual being a case given $x_{test}$, covariates $C$, and random genetic effects $g$.
+where $p_i = P(y_i = 1 \mid x_{test}, g, C)$ is the probability of $i$-th individual being a case given $x_{test}$, covariates $C$, and random genetic effects $g$.
 %
 A score test statistic for the null hypothesis $\beta_{test} = 0$ is then computed as $T = x_{test}^T(y - \hat{p})$, where $\hat{p}$ is the estimated mean under the null model.
 %
@@ -621,7 +623,7 @@ We further narrow down the list of variants by only applying Firth logistic regr
 
 \subsubsection{Calibration of test statistics}
 
-Calibrating the test statistics generated upto a constant of proportionality in equation \ref{chisq_test_2} and \ref{eq:log_lmm2} is a crucial part of a GWAS algorithm, which ensures the false positives are controlled.
+Calibrating the test statistics generated upto a constant of proportionality in Equation \ref{chisq_test_2} and \ref{eq:log_lmm2} is a crucial part of a GWAS algorithm, which ensures the false positives are controlled.
 %
 We calibrate the summary statistics by estimating the effective sample size (ESS) increase compared to running linear regression on a homogeneous subset of unrelated individuals.
 %
@@ -640,7 +642,7 @@ $\frac{N_{qd}}{N_{lr}}$ is the ratio of the total number of samples to the numbe
 %
 $\gamma_{rel}$ and $\gamma_{blr}$ are correction terms to account for relatedness and the use of Bayesian linear regression, which we describe in detail below.
 %
-Note that the $\gamma_{blr}$ term is estimated for each LOCO run, so the correction in equation \ref{eq:calib_main} is performed separately for each chromosome.
+Note that the $\gamma_{blr}$ term is estimated for each LOCO run, so the correction in Equation \ref{eq:calib_main} is performed separately for each chromosome.
 %
 For binary traits, we use logistic regression and apply the correction separately for Firth-corrected and Firth-uncorrected variants.
 
@@ -684,7 +686,7 @@ In particular, the effective sample size multiplier in the presence of relatedne
 \begin{equation}
 \gamma_{\text{rel}} \approx \frac{1}{N}\sum\limits_{i=1}^{N} \frac{\lambda_i}{(\lambda_i - 1)\sigma_g^2 + 1},
 \end{equation}
-where $\lambda_i$ is the $i^{\text{th}}$ eigenvalue of the kinship matrix $K$.
+where $\lambda_i$ is the $i$-th eigenvalue of the kinship matrix $K$.
 %
 And to facilitate this computation, we separately sum across each block $B_i$ of related individuals:
 \begin{equation}
@@ -720,7 +722,7 @@ As the $\gamma_{blr}$ term needs to be computed during the LOCO step, we compute
     %
     for a diploid individual, the raw genotypes take values in ${0,1,2}$.
     %
-    We store the $N \times M$ genotype matrix in $NM/4$ bytes, i.e. using 2 bits per genotype entry.
+    We store the $N \times M$ genotype matrix in $NM/4$ bytes, that is using 2 bits per genotype entry.
     %
     We do so by encoding 8 consecutive entries of the genotype matrix using two 8-bit integers using the built-in \texttt{numpy} features in Python, \texttt{np.packbits()} and \texttt{np.unpackbits()}.
     %
@@ -760,7 +762,7 @@ As the $\gamma_{blr}$ term needs to be computed during the LOCO step, we compute
     %
     Transfer-learning in Bayesian regression.}
     %
-    We measure the causal $\chi^2$ and false positive rate at $5 \times 10^{-4}$, with and without pre-training (for $90$ epochs), and varying the number of LOCO training epochs.
+    We measure the causal $\chi^2$ and false positive rate at $5 \times 10^{-4}$, with and without pretraining (for $90$ epochs), and varying the number of LOCO training epochs.
     %
     Error bars represent the standard error of the mean $\chi^2$ or false positive rate across $50$ independent quantitative traits with GB-unrel structure and $2\%$ polygenicity.
     %
@@ -782,10 +784,10 @@ As the $\gamma_{blr}$ term needs to be computed during the LOCO step, we compute
     %
     \item \textbf{HDF5 and PySnpTools for data loading:}
     %
-    we store the raw genotype matrix in a compressed HDF5 file \cite{hdf5}, which provides fast sample-wise access (i.e., it allows obtaining all variants for an individual) for Bayesian regression.
+    we store the raw genotype matrix in a compressed HDF5 file \cite{hdf5}, which provides fast sample-wise access (that is, it allows obtaining all variants for an individual) for Bayesian regression.
     %
     We instead use PySnpTools (see \url{https://github.com/fastlmm/PySnpTools}), which provides parallelizable variant-wise access, to access \texttt{bgen} or \texttt{bed} files for the calculation of test statistics. 
-    \item \textbf{Approximate Firth logistic regression:} Approximate Firth regression is only applied to variants with logistic regression p-value below $0.05$, as done in Regenie and FastGWA-GLMM.
+    \item \textbf{Approximate Firth logistic regression:} Approximate Firth regression is only applied to variants with logistic regression p-value below $0.05$, as done in REGENIE and FastGWA-GLMM.
     %
     We further narrow down the list of variants by only applying Firth logistic regression to rare variants (MAF < 5\%) or rare traits (prevalence < 5\%).
     %
